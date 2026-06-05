@@ -1,0 +1,47 @@
+{
+  "claim_id": "CLM-2024-001",
+  "control_number": "00001",
+  "submission_date": "2024-07-15",
+  "patient": {
+    "name": "John Smith",
+    "dob": "1965-03-20",
+    "member_id": "MBR123456789",
+    "gender": "M",
+    "relationship": "self"
+  },
+  "provider": {
+    "facility_npi": "1234567890",
+    "facility_name": "Main Medical Center",
+    "provider_npi": "9876543210",
+    "provider_name": "Dr. Jane Doe",
+    "specialty": "Internal Medicine",
+    "tax_id": "12-3456789"
+  },
+  "service_lines": [
+    {
+      "line_number": 1,
+      "cpt_code": "99213",
+      "description": "Office visit, established patient, moderate",
+      "icd10_primary": "Z00.00",
+      "icd10_supporting": ["E11.9"],
+      "units": 1,
+      "charge_amount": 150.00,
+      "dos_start": "2024-06-15",
+      "dos_end": "2024-06-15",
+      "place_of_service": "11"
+    },
+    {
+      "line_number": 2,
+      "cpt_code": "80053",
+      "description": "Comprehensive metabolic panel",
+      "icd10_primary": "Z12.81",
+      "icd10_supporting": [],
+      "units": 1,
+      "charge_amount": 85.00,
+      "dos_start": "2024-06-15",
+      "dos_end": "2024-06-15",
+      "place_of_service": "11"
+    }
+  ],
+  "total_charge": 235.00
+}

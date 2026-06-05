@@ -1,0 +1,9 @@
+{
+  "sample_id": "01",
+  "label": "Clean Claims — Single Payer, No Issues",
+  "description": "Baseline scenario: valid patient, active coverage, all codes valid, no denials",
+  "claim_count": 5,
+  "theme": "CLEAN",
+  "expected_outcome": "All claims approved, clean payment posting",
+  "notes": "Use as baseline to verify agent pipeline works end-to-end"
+}

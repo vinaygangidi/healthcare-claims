@@ -1,0 +1,52 @@
+{
+  "plan_name": "PPO Standard",
+  "payer_name": "United Healthcare",
+  "group_number": "GRP001",
+  "patient_eligibility": {
+    "member_id": "MBR123456789",
+    "effective_date": "2024-01-01",
+    "termination_date": null,
+    "is_active": true,
+    "relationship": "self",
+    "coverage_type": "PPO"
+  },
+  "coverage_rules": {
+    "deductible_individual": 1500.00,
+    "deductible_family": 3000.00,
+    "deductible_met_ytd": 0.00,
+    "copay_office_visit": 30.00,
+    "copay_urgent_care": 75.00,
+    "coinsurance_pct": 20,
+    "out_of_pocket_max": 5000.00,
+    "out_of_pocket_met_ytd": 0.00,
+    "exclusions": [],
+    "covered_services": [
+      "office_visits",
+      "lab_work",
+      "imaging",
+      "preventive_care"
+    ]
+  },
+  "fee_schedule": {
+    "99213": {
+      "allowed_amount": 120.00,
+      "unit_value": 120.00,
+      "requires_modifier": false
+    },
+    "80053": {
+      "allowed_amount": 45.00,
+      "unit_value": 45.00,
+      "requires_modifier": false
+    }
+  },
+  "prior_auth_requirements": [
+    {
+      "cpt_code": "27447",
+      "description": "Total knee replacement",
+      "requires_auth": true
+    }
+  ],
+  "prior_auth_records": [],
+  "network_status": "in_network",
+  "bundling_rules": []
+}
