@@ -1,0 +1,198 @@
+{
+  "claims": [
+    {
+      "claim_id": "CLM-2024-004-A",
+      "control_number": "00010",
+      "submission_date": "2024-08-10",
+      "patient": {
+        "name": "Sandra White",
+        "dob": "1950-04-12",
+        "member_id": "MBR-MEDICARE-001",
+        "gender": "F",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "9900112233",
+        "facility_name": "Imaging Center",
+        "provider_npi": "2324252627",
+        "provider_name": "Dr. Richard Green",
+        "specialty": "Radiology",
+        "tax_id": "33-3456789"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "71020",
+          "description": "Chest X-ray, 2 views",
+          "icd10_primary": "J18.9",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 150.00,
+          "dos_start": "2024-07-20",
+          "dos_end": "2024-07-20",
+          "place_of_service": "11",
+          "modifier": null
+        },
+        {
+          "line_number": 2,
+          "cpt_code": "71020",
+          "description": "Chest X-ray, 2 views (bilateral)",
+          "icd10_primary": "J18.9",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 150.00,
+          "dos_start": "2024-07-20",
+          "dos_end": "2024-07-20",
+          "place_of_service": "11",
+          "modifier": null
+        }
+      ],
+      "total_charge": 300.00,
+      "scenario": "4A - Bilateral X-ray without modifier -50 or -LT/-RT"
+    },
+    {
+      "claim_id": "CLM-2024-004-B",
+      "control_number": "00011",
+      "submission_date": "2024-08-12",
+      "patient": {
+        "name": "Charles Davis",
+        "dob": "1955-06-18",
+        "member_id": "MBR-MEDICARE-002",
+        "gender": "M",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "1011121314",
+        "facility_name": "Laboratory Services",
+        "provider_npi": "2829303132",
+        "provider_name": "Dr. Amy Hall",
+        "specialty": "Pathology",
+        "tax_id": "44-4567890"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "80053",
+          "description": "Comprehensive metabolic panel (left)",
+          "icd10_primary": "Z12.89",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 85.00,
+          "dos_start": "2024-07-22",
+          "dos_end": "2024-07-22",
+          "place_of_service": "11"
+        },
+        {
+          "line_number": 2,
+          "cpt_code": "80053",
+          "description": "Comprehensive metabolic panel (right)",
+          "icd10_primary": "Z12.89",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 85.00,
+          "dos_start": "2024-07-22",
+          "dos_end": "2024-07-22",
+          "place_of_service": "11"
+        }
+      ],
+      "total_charge": 170.00,
+      "scenario": "4B - Identical tests billed twice (should be one code with units=2)"
+    },
+    {
+      "claim_id": "CLM-2024-004-C",
+      "control_number": "00012",
+      "submission_date": "2024-08-14",
+      "patient": {
+        "name": "Evelyn Harris",
+        "dob": "1948-10-25",
+        "member_id": "MBR-MEDICARE-003",
+        "gender": "F",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "1415161718",
+        "facility_name": "Surgical Center",
+        "provider_npi": "3334353637",
+        "provider_name": "Dr. Steven King",
+        "specialty": "Orthopedic Surgery",
+        "tax_id": "55-5678901"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "20610",
+          "description": "Arthrography, ankle, diagnostic",
+          "icd10_primary": "M19.071",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 600.00,
+          "dos_start": "2024-07-24",
+          "dos_end": "2024-07-24",
+          "place_of_service": "21"
+        },
+        {
+          "line_number": 2,
+          "cpt_code": "73610",
+          "description": "MRI, ankle, complete",
+          "icd10_primary": "M19.071",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 1200.00,
+          "dos_start": "2024-07-24",
+          "dos_end": "2024-07-24",
+          "place_of_service": "21"
+        }
+      ],
+      "total_charge": 1800.00,
+      "scenario": "4C - Mutually exclusive codes (arthrography + MRI, same joint, same DOS)"
+    },
+    {
+      "claim_id": "CLM-2024-004-D",
+      "control_number": "00013",
+      "submission_date": "2024-08-16",
+      "patient": {
+        "name": "Margaret Clark",
+        "dob": "1960-01-30",
+        "member_id": "MBR-MEDICARE-004",
+        "gender": "F",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "1819202122",
+        "facility_name": "Clinic",
+        "provider_npi": "3839404142",
+        "provider_name": "Dr. Lisa Scott",
+        "specialty": "Family Medicine",
+        "tax_id": "66-6789012"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "99213",
+          "description": "Office visit, established patient, low complexity",
+          "icd10_primary": "Z00.00",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 100.00,
+          "dos_start": "2024-07-26",
+          "dos_end": "2024-07-26",
+          "place_of_service": "11"
+        },
+        {
+          "line_number": 2,
+          "cpt_code": "99214",
+          "description": "Office visit, established patient, moderate complexity",
+          "icd10_primary": "Z00.00",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 150.00,
+          "dos_start": "2024-07-26",
+          "dos_end": "2024-07-26",
+          "place_of_service": "11"
+        }
+      ],
+      "total_charge": 250.00,
+      "scenario": "4D - Incorrect E&M level stacking (two different complexity levels, same DOS)"
+    }
+  ]
+}

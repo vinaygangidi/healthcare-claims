@@ -1,0 +1,118 @@
+{
+  "claims": [
+    {
+      "claim_id": "CLM-2024-003-A",
+      "control_number": "00007",
+      "submission_date": "2024-08-01",
+      "patient": {
+        "name": "George Taylor",
+        "dob": "1952-03-15",
+        "member_id": "MBR-PRIM-001",
+        "gender": "M",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "6677889900",
+        "facility_name": "Medicare Certified Hospital",
+        "provider_npi": "1011121314",
+        "provider_name": "Dr. Karen Lopez",
+        "specialty": "Cardiology",
+        "tax_id": "88-7654321"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "93000",
+          "description": "Electrocardiogram (EKG), complete",
+          "icd10_primary": "I10",
+          "icd10_supporting": ["R07.9"],
+          "units": 1,
+          "charge_amount": 350.00,
+          "dos_start": "2024-07-25",
+          "dos_end": "2024-07-25",
+          "place_of_service": "11"
+        }
+      ],
+      "total_charge": 350.00,
+      "scenario": "3A - Medicare Primary + Medigap Secondary",
+      "primary_member_id": "MBR-PRIM-001",
+      "secondary_member_id": "MBR-SEC-001"
+    },
+    {
+      "claim_id": "CLM-2024-003-B",
+      "control_number": "00008",
+      "submission_date": "2024-08-05",
+      "patient": {
+        "name": "Helen Garcia",
+        "dob": "1948-07-20",
+        "member_id": "MBR-PRIM-002",
+        "gender": "F",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "7788990011",
+        "facility_name": "Community Health Center",
+        "provider_npi": "1415161718",
+        "provider_name": "Dr. William Brown",
+        "specialty": "Family Medicine",
+        "tax_id": "99-8765432"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "99214",
+          "description": "Office visit, established patient, moderate complexity",
+          "icd10_primary": "Z00.00",
+          "icd10_supporting": ["E11.9"],
+          "units": 1,
+          "charge_amount": 200.00,
+          "dos_start": "2024-07-30",
+          "dos_end": "2024-07-30",
+          "place_of_service": "11"
+        }
+      ],
+      "total_charge": 200.00,
+      "scenario": "3A - Medicare Primary + Medigap Secondary",
+      "primary_member_id": "MBR-PRIM-002",
+      "secondary_member_id": "MBR-SEC-002"
+    },
+    {
+      "claim_id": "CLM-2024-003-C",
+      "control_number": "00009",
+      "submission_date": "2024-08-08",
+      "patient": {
+        "name": "James Miller",
+        "dob": "1965-11-08",
+        "member_id": "MBR-PRIM-003",
+        "gender": "M",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "8899001122",
+        "facility_name": "Urgent Care Clinic",
+        "provider_npi": "1819202122",
+        "provider_name": "Dr. Nancy Jackson",
+        "specialty": "Family Medicine",
+        "tax_id": "11-2345678"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "99285",
+          "description": "Emergency department visit, high complexity",
+          "icd10_primary": "S72.001A",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 1500.00,
+          "dos_start": "2024-07-28",
+          "dos_end": "2024-07-28",
+          "place_of_service": "23"
+        }
+      ],
+      "total_charge": 1500.00,
+      "scenario": "3B - Commercial Primary + Spouse Secondary",
+      "primary_member_id": "MBR-PRIM-003",
+      "secondary_member_id": "MBR-SEC-003"
+    }
+  ]
+}

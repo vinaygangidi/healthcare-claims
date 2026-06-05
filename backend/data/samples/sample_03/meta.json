@@ -1,0 +1,9 @@
+{
+  "sample_id": "03",
+  "label": "Coordination of Benefits (COB) — Primary + Secondary",
+  "description": "Patient with two insurance plans; claim must be split between primary and secondary payers",
+  "claim_count": 3,
+  "theme": "COB",
+  "expected_outcome": "Primary plan processes first, secondary receives EOB and calculates its responsibility",
+  "notes": "Tests agent 2 (Eligibility) and agent 5 (Posting) for COB coordination"
+}

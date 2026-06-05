@@ -1,0 +1,172 @@
+{
+  "claims": [
+    {
+      "claim_id": "CLM-2024-005-A",
+      "control_number": "00014",
+      "submission_date": "2024-08-18",
+      "patient": {
+        "name": "Dorothy Harris",
+        "dob": "1958-09-14",
+        "member_id": "MBR-OON-001",
+        "gender": "F",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "2324252627",
+        "facility_name": "Out-of-Network Hospital",
+        "provider_npi": "4344454647",
+        "provider_name": "Dr. Paul Martin",
+        "specialty": "Orthopedic Surgery",
+        "tax_id": "77-7890123"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "27447",
+          "description": "Total knee replacement",
+          "icd10_primary": "M17.11",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 55000.00,
+          "dos_start": "2024-07-10",
+          "dos_end": "2024-07-10",
+          "place_of_service": "21"
+        }
+      ],
+      "total_charge": 55000.00,
+      "scenario": "5A - Out-of-network billed at list price, allowed at 40% discount"
+    },
+    {
+      "claim_id": "CLM-2024-005-B",
+      "control_number": "00015",
+      "submission_date": "2024-08-20",
+      "patient": {
+        "name": "Frank Thompson",
+        "dob": "1962-05-22",
+        "member_id": "MBR-BUNDLE-001",
+        "gender": "M",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "3435363738",
+        "facility_name": "Surgical Center",
+        "provider_npi": "4849505152",
+        "provider_name": "Dr. Ruth Adams",
+        "specialty": "General Surgery",
+        "tax_id": "88-8901234"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "99213",
+          "description": "Pre-operative visit",
+          "icd10_primary": "Z01.810",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 150.00,
+          "dos_start": "2024-07-08",
+          "dos_end": "2024-07-08",
+          "place_of_service": "11"
+        },
+        {
+          "line_number": 2,
+          "cpt_code": "47562",
+          "description": "Laparoscopic cholecystectomy",
+          "icd10_primary": "K80.00",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 12000.00,
+          "dos_start": "2024-07-15",
+          "dos_end": "2024-07-15",
+          "place_of_service": "21"
+        },
+        {
+          "line_number": 3,
+          "cpt_code": "99213",
+          "description": "Post-operative follow-up",
+          "icd10_primary": "Z09",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 150.00,
+          "dos_start": "2024-07-22",
+          "dos_end": "2024-07-22",
+          "place_of_service": "11"
+        }
+      ],
+      "total_charge": 12300.00,
+      "scenario": "5B - Global surgery period: pre-op + surgery + post-op; some bundled into global fee"
+    },
+    {
+      "claim_id": "CLM-2024-005-C",
+      "control_number": "00016",
+      "submission_date": "2024-08-22",
+      "patient": {
+        "name": "Jennifer Phillips",
+        "dob": "1970-02-18",
+        "member_id": "MBR-FACILITY-001",
+        "gender": "F",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "4546474849",
+        "facility_name": "Hospital Outpatient Facility",
+        "provider_npi": "5354555657",
+        "provider_name": "Dr. Sophia Turner",
+        "specialty": "Cardiology",
+        "tax_id": "99-9012345"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "93000",
+          "description": "EKG, complete (facility component)",
+          "icd10_primary": "I10",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 300.00,
+          "dos_start": "2024-07-19",
+          "dos_end": "2024-07-19",
+          "place_of_service": "22"
+        }
+      ],
+      "total_charge": 300.00,
+      "scenario": "5C - Facility fee variance: billed as facility, payer only recognizes professional component"
+    },
+    {
+      "claim_id": "CLM-2024-005-D",
+      "control_number": "00017",
+      "submission_date": "2024-08-24",
+      "patient": {
+        "name": "Michael Rodriguez",
+        "dob": "1975-08-05",
+        "member_id": "MBR-UPGRADE-001",
+        "gender": "M",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "5657585960",
+        "facility_name": "Family Medicine Clinic",
+        "provider_npi": "6061626364",
+        "provider_name": "Dr. Angela Woods",
+        "specialty": "Family Medicine",
+        "tax_id": "11-1234567"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "99214",
+          "description": "Office visit, established patient, moderate complexity (upgraded claim)",
+          "icd10_primary": "Z00.00",
+          "icd10_supporting": ["E11.9"],
+          "units": 1,
+          "charge_amount": 200.00,
+          "dos_start": "2024-07-21",
+          "dos_end": "2024-07-21",
+          "place_of_service": "11"
+        }
+      ],
+      "total_charge": 200.00,
+      "scenario": "5D - E&M level upgrade: billed as 99214, payer determines only 99213 appropriate (40% variance)"
+    }
+  ]
+}

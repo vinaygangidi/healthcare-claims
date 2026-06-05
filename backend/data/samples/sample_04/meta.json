@@ -1,0 +1,9 @@
+{
+  "sample_id": "04",
+  "label": "Medicare/NCCI Edits — Coding Violations",
+  "description": "Unbundling, missing modifiers, bilateral codes, NCCI violations",
+  "claim_count": 4,
+  "theme": "NCCI",
+  "expected_outcome": "Agent 1 flags missing modifiers, Agent 3 detects bundling violations, recalculates as single code",
+  "notes": "Tests agent 1 (flag detection) and agent 3 (unbundling logic)"
+}

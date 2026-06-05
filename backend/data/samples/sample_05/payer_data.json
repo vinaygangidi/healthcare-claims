@@ -1,0 +1,97 @@
+{
+  "plan_name": "PPO Network",
+  "payer_name": "Aetna",
+  "group_number": "GRP005",
+  "coverage_rules": {
+    "deductible_individual": 1500.00,
+    "deductible_met_ytd": 750.00,
+    "copay_office_visit": 30.00,
+    "coinsurance_pct": 20,
+    "out_of_pocket_max": 5000.00,
+    "out_of_pocket_met_ytd": 1500.00,
+    "out_of_network_coinsurance_pct": 40,
+    "out_of_network_deductible": 3000.00,
+    "exclusions": []
+  },
+  "fee_schedule": {
+    "27447": {
+      "in_network": 32000.00,
+      "out_of_network": 18000.00,
+      "requires_modifier": false
+    },
+    "99213": {
+      "in_network": 120.00,
+      "out_of_network": 90.00,
+      "requires_modifier": false
+    },
+    "99214": {
+      "in_network": 180.00,
+      "out_of_network": 120.00,
+      "requires_modifier": false
+    },
+    "47562": {
+      "in_network": 9500.00,
+      "out_of_network": 7000.00,
+      "requires_modifier": false,
+      "global_period": 90,
+      "includes": ["pre_op_visit", "post_op_visits"]
+    },
+    "93000": {
+      "in_network_professional": 12.50,
+      "in_network_facility": 25.00,
+      "out_of_network": 20.00,
+      "requires_modifier": false
+    }
+  },
+  "patient_eligibility_snapshots": {
+    "MBR-OON-001": {
+      "member_id": "MBR-OON-001",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "PPO"
+    },
+    "MBR-BUNDLE-001": {
+      "member_id": "MBR-BUNDLE-001",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "PPO"
+    },
+    "MBR-FACILITY-001": {
+      "member_id": "MBR-FACILITY-001",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "PPO"
+    },
+    "MBR-UPGRADE-001": {
+      "member_id": "MBR-UPGRADE-001",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "PPO"
+    }
+  },
+  "global_period_rules": [
+    {
+      "cpt_code": "47562",
+      "global_period_days": 90,
+      "includes_preop_visits": true,
+      "includes_postop_visits": true,
+      "max_postop_visits": 2,
+      "bundling_note": "Pre-op visit and up to 2 post-op visits bundled into global surgical fee"
+    }
+  ],
+  "facility_vs_professional_rules": [
+    {
+      "cpt_code": "93000",
+      "professional_component": 12.50,
+      "facility_component": 25.00,
+      "note": "When billed as facility, do not also bill professional component separately"
+    }
+  ],
+  "prior_auth_requirements": [],
+  "network_status": "mixed",
+  "bundling_rules": []
+}

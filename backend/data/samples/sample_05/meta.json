@@ -1,0 +1,9 @@
+{
+  "sample_id": "05",
+  "label": "Underpayment & Contractual Adjustment — Variance Detection",
+  "description": "Billed > Allowed; detect variance, calculate provider write-off, alert on underpayment",
+  "claim_count": 4,
+  "theme": "UNDERPAYMENT",
+  "expected_outcome": "Agent 3 flags excessive variance, Agent 4 alerts on underpayment, Agent 5 posts write-off",
+  "notes": "Tests agent 3 variance detection and agent 5 posting accuracy"
+}

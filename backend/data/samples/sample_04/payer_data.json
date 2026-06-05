@@ -1,0 +1,104 @@
+{
+  "plan_name": "Medicare Part B",
+  "payer_name": "Centers for Medicare & Medicaid Services (CMS)",
+  "group_number": "MEDICARE",
+  "coverage_rules": {
+    "deductible_individual": 240.00,
+    "deductible_met_ytd": 240.00,
+    "coinsurance_pct": 20,
+    "out_of_pocket_max": 2850.00,
+    "out_of_pocket_met_ytd": 500.00,
+    "exclusions": []
+  },
+  "fee_schedule": {
+    "71020": {
+      "allowed_amount": 12.50,
+      "requires_modifier": false,
+      "bilateral_code": false
+    },
+    "80053": {
+      "allowed_amount": 20.00,
+      "requires_modifier": false,
+      "bilateral_code": false
+    },
+    "20610": {
+      "allowed_amount": 400.00,
+      "requires_modifier": false,
+      "bilateral_code": false
+    },
+    "73610": {
+      "allowed_amount": 600.00,
+      "requires_modifier": false,
+      "bilateral_code": false
+    },
+    "99213": {
+      "allowed_amount": 75.00,
+      "requires_modifier": false
+    },
+    "99214": {
+      "allowed_amount": 113.90,
+      "requires_modifier": false
+    }
+  },
+  "patient_eligibility_snapshots": {
+    "MBR-MEDICARE-001": {
+      "member_id": "MBR-MEDICARE-001",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "Medicare Parts A & B"
+    },
+    "MBR-MEDICARE-002": {
+      "member_id": "MBR-MEDICARE-002",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "Medicare Parts A & B"
+    },
+    "MBR-MEDICARE-003": {
+      "member_id": "MBR-MEDICARE-003",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "Medicare Parts A & B"
+    },
+    "MBR-MEDICARE-004": {
+      "member_id": "MBR-MEDICARE-004",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "Medicare Parts A & B"
+    }
+  },
+  "ncci_bundling_rules": [
+    {
+      "primary_code": "71020",
+      "component_codes": [],
+      "rule": "When billed twice for bilateral imaging, use modifier -50 or -LT/-RT for each side"
+    },
+    {
+      "primary_code": "99214",
+      "component_codes": ["99213"],
+      "rule": "Do not bill multiple E&M levels for same DOS; use highest level only"
+    },
+    {
+      "primary_code": "20610",
+      "component_codes": ["73610"],
+      "rule": "Arthrography and MRI same joint, same DOS are mutually exclusive; choose one"
+    },
+    {
+      "primary_code": "80053",
+      "component_codes": [],
+      "rule": "Same test billed multiple times should have units > 1 on single line, not duplicate lines"
+    }
+  ],
+  "prior_auth_requirements": [],
+  "network_status": "in_network",
+  "bundling_rules": [
+    {
+      "bundle_code": "71020",
+      "contains": ["71020"],
+      "note": "Bilateral imaging; use modifier -50 for bilateral or -LT/-RT for each side"
+    }
+  ]
+}

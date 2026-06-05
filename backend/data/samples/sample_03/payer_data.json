@@ -1,0 +1,109 @@
+{
+  "plan_name": "Medicare + Medigap",
+  "primary_payer": {
+    "payer_name": "Centers for Medicare & Medicaid Services (CMS)",
+    "plan_type": "Medicare Parts A & B"
+  },
+  "secondary_payer": {
+    "payer_name": "United Healthcare Medigap",
+    "plan_type": "Medigap Plan F"
+  },
+  "cob_indicator": "secondary_payer",
+  "coverage_rules_primary": {
+    "deductible_individual": 240.00,
+    "deductible_met_ytd": 240.00,
+    "coinsurance_pct": 20,
+    "out_of_pocket_max": 2850.00,
+    "out_of_pocket_met_ytd": 500.00,
+    "exclusions": []
+  },
+  "coverage_rules_secondary": {
+    "deductible_individual": 0,
+    "coinsurance_pct": 0,
+    "out_of_pocket_max": 0,
+    "covers_primary_coinsurance": true,
+    "covers_primary_deductible": true,
+    "exclusions": []
+  },
+  "fee_schedule_primary": {
+    "93000": {
+      "allowed_amount": 12.50,
+      "requires_modifier": false
+    },
+    "99214": {
+      "allowed_amount": 113.90,
+      "requires_modifier": false
+    },
+    "99285": {
+      "allowed_amount": 950.00,
+      "requires_modifier": false
+    }
+  },
+  "fee_schedule_secondary": {
+    "93000": {
+      "allowed_amount": 12.50,
+      "requires_modifier": false
+    },
+    "99214": {
+      "allowed_amount": 113.90,
+      "requires_modifier": false
+    },
+    "99285": {
+      "allowed_amount": 950.00,
+      "requires_modifier": false
+    }
+  },
+  "patient_eligibility_snapshots": {
+    "MBR-PRIM-001": {
+      "member_id": "MBR-PRIM-001",
+      "payer": "Medicare",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "Medicare Parts A & B"
+    },
+    "MBR-SEC-001": {
+      "member_id": "MBR-SEC-001",
+      "payer": "Medigap",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "Medigap Plan F"
+    },
+    "MBR-PRIM-002": {
+      "member_id": "MBR-PRIM-002",
+      "payer": "Medicare",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "Medicare Parts A & B"
+    },
+    "MBR-SEC-002": {
+      "member_id": "MBR-SEC-002",
+      "payer": "Medigap",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "Medigap Plan F"
+    },
+    "MBR-PRIM-003": {
+      "member_id": "MBR-PRIM-003",
+      "payer": "Commercial",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "PPO"
+    },
+    "MBR-SEC-003": {
+      "member_id": "MBR-SEC-003",
+      "payer": "Commercial Spouse",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "coverage_type": "PPO"
+    }
+  },
+  "prior_auth_requirements": [],
+  "network_status": "in_network",
+  "bundling_rules": []
+}

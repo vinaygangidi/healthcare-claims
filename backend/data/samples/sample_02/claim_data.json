@@ -1,0 +1,186 @@
+{
+  "claims": [
+    {
+      "claim_id": "CLM-2024-002-A",
+      "control_number": "00002",
+      "submission_date": "2024-07-20",
+      "patient": {
+        "name": "Robert Johnson",
+        "dob": "1958-11-10",
+        "member_id": "MBR987654321",
+        "gender": "M",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "1122334455",
+        "facility_name": "Orthopedic Surgery Center",
+        "provider_npi": "5566778899",
+        "provider_name": "Dr. Michael Chen",
+        "specialty": "Orthopedic Surgery",
+        "tax_id": "98-7654321"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "27447",
+          "description": "Total knee replacement",
+          "icd10_primary": "M17.11",
+          "icd10_supporting": ["E11.9"],
+          "units": 1,
+          "charge_amount": 45000.00,
+          "dos_start": "2024-07-15",
+          "dos_end": "2024-07-15",
+          "place_of_service": "21",
+          "prior_auth_number": null
+        }
+      ],
+      "total_charge": 45000.00,
+      "scenario": "2A - Missing Prior Authorization"
+    },
+    {
+      "claim_id": "CLM-2024-002-B",
+      "control_number": "00003",
+      "submission_date": "2024-07-22",
+      "patient": {
+        "name": "Margaret Wilson",
+        "dob": "1945-05-22",
+        "member_id": "MBR555666777",
+        "gender": "F",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "2233445566",
+        "facility_name": "General Hospital",
+        "provider_npi": "6677889900",
+        "provider_name": "Dr. Sarah Martinez",
+        "specialty": "Internal Medicine",
+        "tax_id": "54-3210987"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "99213",
+          "description": "Office visit, established patient",
+          "icd10_primary": "J06.9",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 150.00,
+          "dos_start": "2024-07-10",
+          "dos_end": "2024-07-10",
+          "place_of_service": "11"
+        }
+      ],
+      "total_charge": 150.00,
+      "scenario": "2B - Patient Ineligible (coverage terminated)"
+    },
+    {
+      "claim_id": "CLM-2024-002-C",
+      "control_number": "00004",
+      "submission_date": "2024-07-25",
+      "patient": {
+        "name": "David Lee",
+        "dob": "1972-02-14",
+        "member_id": "MBR111222333",
+        "gender": "M",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "3344556677",
+        "facility_name": "Physical Therapy Associates",
+        "provider_npi": "7788990011",
+        "provider_name": "PT, Jennifer White",
+        "specialty": "Physical Therapy",
+        "tax_id": "12-9876543"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "97161",
+          "description": "Physical therapy evaluation, low complexity",
+          "icd10_primary": "M79.3",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 125.00,
+          "dos_start": "2024-07-18",
+          "dos_end": "2024-07-18",
+          "place_of_service": "11"
+        }
+      ],
+      "total_charge": 125.00,
+      "scenario": "2C - Service Excluded (25th PT visit, exceeds limit)",
+      "visit_number": 25
+    },
+    {
+      "claim_id": "CLM-2024-002-D",
+      "control_number": "00005",
+      "submission_date": "2024-07-28",
+      "patient": {
+        "name": "Patricia Brown",
+        "dob": "1955-08-30",
+        "member_id": "MBR444555666",
+        "gender": "F",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "4455667788",
+        "facility_name": "Radiology Center",
+        "provider_npi": "8899001122",
+        "provider_name": "Dr. James Smith",
+        "specialty": "Radiology",
+        "tax_id": "76-5432109"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "73610",
+          "description": "Ankle MRI, complete",
+          "icd10_primary": "Z00.00",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 1200.00,
+          "dos_start": "2024-07-20",
+          "dos_end": "2024-07-20",
+          "place_of_service": "24"
+        }
+      ],
+      "total_charge": 1200.00,
+      "scenario": "2D - Medical Necessity (preventive care code, not clinical)"
+    },
+    {
+      "claim_id": "CLM-2024-002-E",
+      "control_number": "00006",
+      "submission_date": "2024-07-30",
+      "patient": {
+        "name": "Thomas Anderson",
+        "dob": "1960-12-05",
+        "member_id": "MBR777888999",
+        "gender": "M",
+        "relationship": "self"
+      },
+      "provider": {
+        "facility_npi": "5566778899",
+        "facility_name": "Surgical Center",
+        "provider_npi": "9900112233",
+        "provider_name": "Dr. Elizabeth Davis",
+        "specialty": "General Surgery",
+        "tax_id": "43-2109876"
+      },
+      "service_lines": [
+        {
+          "line_number": 1,
+          "cpt_code": "47562",
+          "description": "Laparoscopic cholecystectomy",
+          "icd10_primary": "K80.00",
+          "icd10_supporting": [],
+          "units": 1,
+          "charge_amount": 12000.00,
+          "dos_start": "2024-07-12",
+          "dos_end": "2024-07-12",
+          "place_of_service": "21"
+        }
+      ],
+      "total_charge": 12000.00,
+      "scenario": "2B - Patient Ineligible (membership not yet effective)"
+    }
+  ]
+}

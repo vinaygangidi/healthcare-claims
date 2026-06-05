@@ -1,0 +1,113 @@
+{
+  "plan_name": "HMO Select",
+  "payer_name": "Blue Cross Blue Shield",
+  "group_number": "GRP002",
+  "coverage_rules": {
+    "deductible_individual": 2000.00,
+    "deductible_family": 4000.00,
+    "deductible_met_ytd": 500.00,
+    "copay_office_visit": 40.00,
+    "copay_urgent_care": 100.00,
+    "copay_specialist": 60.00,
+    "coinsurance_pct": 20,
+    "out_of_pocket_max": 7500.00,
+    "out_of_pocket_met_ytd": 1200.00,
+    "exclusions": [
+      "cosmetic_procedures",
+      "experimental_treatments",
+      "over_limit_pt_visits"
+    ],
+    "covered_services": [
+      "office_visits",
+      "surgery",
+      "lab_work",
+      "imaging"
+    ],
+    "pt_visit_limit": 20,
+    "annual_imaging_limit": 5
+  },
+  "fee_schedule": {
+    "27447": {
+      "allowed_amount": 35000.00,
+      "requires_modifier": false
+    },
+    "99213": {
+      "allowed_amount": 120.00,
+      "requires_modifier": false
+    },
+    "97161": {
+      "allowed_amount": 85.00,
+      "requires_modifier": false
+    },
+    "73610": {
+      "allowed_amount": 800.00,
+      "requires_modifier": false
+    },
+    "47562": {
+      "allowed_amount": 10000.00,
+      "requires_modifier": false
+    }
+  },
+  "prior_auth_requirements": [
+    {
+      "cpt_code": "27447",
+      "description": "Total knee replacement",
+      "requires_auth": true
+    },
+    {
+      "cpt_code": "47562",
+      "description": "Laparoscopic cholecystectomy",
+      "requires_auth": true
+    },
+    {
+      "cpt_code": "73610",
+      "description": "MRI - ankle",
+      "requires_auth": true
+    }
+  ],
+  "prior_auth_records": [],
+  "patient_eligibility_snapshots": {
+    "MBR987654321": {
+      "member_id": "MBR987654321",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "relationship": "self",
+      "coverage_type": "HMO"
+    },
+    "MBR555666777": {
+      "member_id": "MBR555666777",
+      "effective_date": "2024-01-01",
+      "termination_date": "2024-06-30",
+      "is_active": false,
+      "relationship": "self",
+      "coverage_type": "HMO"
+    },
+    "MBR111222333": {
+      "member_id": "MBR111222333",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "relationship": "self",
+      "coverage_type": "HMO"
+    },
+    "MBR444555666": {
+      "member_id": "MBR444555666",
+      "effective_date": "2024-01-01",
+      "termination_date": null,
+      "is_active": true,
+      "relationship": "self",
+      "coverage_type": "HMO"
+    },
+    "MBR777888999": {
+      "member_id": "MBR777888999",
+      "effective_date": "2024-08-01",
+      "termination_date": null,
+      "is_active": false,
+      "relationship": "self",
+      "coverage_type": "HMO"
+    }
+  },
+  "network_status": "in_network",
+  "bundling_rules": []
+}
