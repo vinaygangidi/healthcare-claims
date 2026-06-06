@@ -1,8 +1,5 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm install",
-  "env": {
-    "NEXT_PUBLIC_BACKEND_URL": "@healthcare_claims_backend_url"
-  }
+  "installCommand": "npm install"
 }
