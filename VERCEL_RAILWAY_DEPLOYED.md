@@ -2,7 +2,7 @@
 
 ## Vercel Frontend — ✅ DEPLOYED
 
-**URL:** https://frontend-fawn-psi-63.vercel.app
+**URL:** https://healthcare-claims.vercel.app ✨ (Clean, semantic URL)
 
 **Status:** Live and running  
 **Framework:** Next.js 14.2.35  
@@ -11,7 +11,7 @@
 
 ### Test Frontend
 ```bash
-curl https://frontend-fawn-psi-63.vercel.app
+curl https://healthcare-claims.vercel.app
 ```
 
 Expected: HTML page loads successfully
@@ -105,7 +105,7 @@ Process Claim (SSE):
 ```
 ┌─────────────────────────────────────────────────┐
 │          Vercel (Frontend)                       │
-│  https://frontend-fawn-psi-63.vercel.app       │
+│  https://healthcare-claims.vercel.app          │
 │  ✅ DEPLOYED                                    │
 └────────────────┬────────────────────────────────┘
                  │ HTTPS
@@ -166,7 +166,7 @@ Process Claim (SSE):
 
 | Service | Platform | Status | URL |
 |---------|----------|--------|-----|
-| Frontend | Vercel | ✅ Deployed | https://frontend-fawn-psi-63.vercel.app |
+| Frontend | Vercel | ✅ Deployed | https://healthcare-claims.vercel.app |
 | Backend | Railway | ⏳ Ready | Manual deploy needed → https://railway.app |
 
 **Total Deployment Time:** ~5 minutes (once Railway is set up)
