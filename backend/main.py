@@ -15,6 +15,10 @@ import os
 import json
 import asyncio
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
 
 from agents.claims_pipeline import run_claims_pipeline
 

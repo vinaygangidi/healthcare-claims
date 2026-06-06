@@ -10,6 +10,7 @@ import json
 import asyncio
 from typing import AsyncGenerator
 from openai import AsyncAzureOpenAI
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 import os
 
 from . import (
@@ -117,11 +118,25 @@ async def run_claims_pipeline(
         dict with keys: event, agent, ... (agent-specific fields)
     """
 
-    client = AsyncAzureOpenAI(
-        azure_endpoint=os.environ.get("AZURE_AI_ENDPOINT", ""),
-        api_key=os.environ.get("AZURE_API_KEY", ""),
-        api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
-    )
+    # Use API key if available, otherwise use DefaultAzureCredential
+    api_key = os.environ.get("AZURE_API_KEY")
+
+    if api_key:
+        client = AsyncAzureOpenAI(
+            azure_endpoint=os.environ.get("AZURE_AI_ENDPOINT"),
+            api_key=api_key,
+            api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
+        )
+    else:
+        # Use DefaultAzureCredential for managed identity auth
+        token_provider = get_bearer_token_provider(
+            DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+        )
+        client = AsyncAzureOpenAI(
+            azure_endpoint=os.environ.get("AZURE_AI_ENDPOINT"),
+            azure_ad_token_provider=token_provider,
+            api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
+        )
 
     all_results = {}
 
@@ -164,7 +179,7 @@ async def run_claims_pipeline(
             )
 
             async for chunk in stream:
-                if chunk.choices[0].delta.content:
+                if chunk.choices and len(chunk.choices) > 0 and chunk.choices[0].delta.content:
                     token = chunk.choices[0].delta.content
                     full_response += token
                     yield {
@@ -174,6 +189,9 @@ async def run_claims_pipeline(
                     }
 
         except Exception as e:
+            import traceback
+            error_msg = f"Error calling {agent_name}: {str(e)}\n{traceback.format_exc()}"
+            print(error_msg, flush=True)
             yield {
                 "event": "error",
                 "agent": agent_name,
