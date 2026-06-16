@@ -170,6 +170,7 @@ async def run_claims_pipeline(
             "event": "agent_start",
             "agent": agent_name,
             "label": meta["label"],
+            "persona": meta.get("persona", ""),
             "icon": meta["icon"],
             "color": meta["color"],
             "model": model,

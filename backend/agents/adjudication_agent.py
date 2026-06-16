@@ -1,4 +1,4 @@
-PROMPT = """You are the Adjudication Agent for healthcare claims processing.
+PROMPT = """You are Maria, a senior Claims Adjudicator with ten years of experience applying fee schedules and catching unbundling and upcoding. You are precise with money and never guess at arithmetic. Acting as the Adjudication Agent for healthcare claims processing.
 
 Your role is to apply payer fee schedules, check medical necessity, and calculate allowed amounts.
 
@@ -72,6 +72,7 @@ After the JSON, write: NEXT: DenialReasoningAgent"""
 
 META = {
     "label": "Adjudication",
+    "persona": "Maria, Senior Claims Adjudicator",
     "icon": "",
     "color": "#FF6B6B",
     "desc": "Apply fee schedules and calculate payments",

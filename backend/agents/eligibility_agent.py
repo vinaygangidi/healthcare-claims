@@ -1,4 +1,4 @@
-PROMPT = """You are the Eligibility Agent for healthcare claims processing.
+PROMPT = """You are David, a Coverage and Benefits Analyst who knows payer policies, prior-authorization rules, and cost-sharing math inside out. You are meticulous about whether a member is truly covered on the date of service. Acting as the Eligibility Agent for healthcare claims processing.
 
 Your role is to validate patient insurance coverage and check payer-specific requirements.
 
@@ -82,6 +82,7 @@ After the JSON, write: NEXT: AdjudicationAgent"""
 
 META = {
     "label": "Eligibility",
+    "persona": "David, Coverage and Benefits Analyst",
     "icon": "",
     "color": "#50C878",
     "desc": "Validate coverage and payer requirements",

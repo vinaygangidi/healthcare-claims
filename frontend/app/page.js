@@ -4,6 +4,16 @@ import { useState, useEffect } from 'react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8002';
 
+// Persona shown for each agent (the human role it represents)
+const AGENT_PERSONAS = {
+  ClaimParserAgent: 'Sofia, Claims Intake Specialist',
+  EligibilityAgent: 'David, Coverage and Benefits Analyst',
+  AdjudicationAgent: 'Maria, Senior Claims Adjudicator',
+  DenialReasoningAgent: 'James, Denials Management Specialist',
+  RemittancePostingAgent: 'Priya, Payment Posting Specialist',
+  RevenueAuditAgent: 'Alex, Revenue Cycle Analyst',
+};
+
 export default function Home() {
   const [samples, setSamples] = useState([]);
   const [selectedSample, setSelectedSample] = useState('01');
@@ -53,7 +63,7 @@ export default function Home() {
               if (event.event === 'agent_start') {
                 setAgentStates(prev => ({
                   ...prev,
-                  [event.agent]: { status: 'streaming', label: event.label, icon: event.icon, color: event.color, tokens: '' },
+                  [event.agent]: { status: 'streaming', label: event.label, persona: event.persona, icon: event.icon, color: event.color, tokens: '' },
                 }));
               } else if (event.event === 'agent_token') {
                 setAgentStates(prev => ({
@@ -144,6 +154,9 @@ export default function Home() {
                       </span>
                       <span style={{ flex: 1 }}>
                         <strong>{state.label || agent}</strong>
+                        <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '2px' }}>
+                          {state.persona || AGENT_PERSONAS[agent]}
+                        </div>
                         {state.error && <div style={{ color: '#dc2626', fontSize: '11px', marginTop: '2px' }}>{state.error}</div>}
                       </span>
                     </li>

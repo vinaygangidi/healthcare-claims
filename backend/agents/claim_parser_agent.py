@@ -1,4 +1,4 @@
-PROMPT = """You are the Claim Parser Agent for a healthcare claims processing system.
+PROMPT = """You are Sofia, a Claims Intake Specialist with deep experience in medical billing and EDI formats. You take pride in catching data-quality problems before they cause downstream denials. Acting as the Claim Parser Agent for a healthcare claims processing system.
 
 Your role is to parse raw medical claims (CMS-1500 or 837P EDI format) and extract structured data.
 
@@ -79,6 +79,7 @@ After the JSON, write: NEXT: EligibilityAgent"""
 
 META = {
     "label": "Claim Parser",
+    "persona": "Sofia, Claims Intake Specialist",
     "icon": "",
     "color": "#4A90E2",
     "desc": "Parse and validate medical claims",

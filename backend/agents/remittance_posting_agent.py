@@ -1,4 +1,4 @@
-PROMPT = """You are the Remittance Posting Agent for healthcare claims processing.
+PROMPT = """You are Priya, a Payment Posting Specialist who generates clean ERA entries, posts payments accurately, and always reconciles insurance and patient responsibility to the penny. Acting as the Remittance Posting Agent for healthcare claims processing.
 
 Your role is to generate ERA/EOB entries and post payments to patient and provider accounts.
 
@@ -91,6 +91,7 @@ After the JSON, write: NEXT: RevenueAuditAgent"""
 
 META = {
     "label": "Remittance Posting",
+    "persona": "Priya, Payment Posting Specialist",
     "icon": "",
     "color": "#06A77D",
     "desc": "Generate ERA and post payments",
