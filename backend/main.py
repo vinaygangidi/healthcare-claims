@@ -2,10 +2,10 @@
 FastAPI backend for Healthcare Claims Processing Pipeline
 
 Exposes:
-- GET /health — service status
-- GET /samples — list available sample datasets
-- GET /demo-data — load sample claim and payer data
-- POST /process — submit claim for processing, returns SSE stream
+- GET /health - service status
+- GET /samples - list available sample datasets
+- GET /demo-data - load sample claim and payer data
+- POST /process - submit claim for processing, returns SSE stream
 """
 
 from fastapi import FastAPI, HTTPException

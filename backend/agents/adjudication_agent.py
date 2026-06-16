@@ -5,13 +5,13 @@ Your role is to apply payer fee schedules, check medical necessity, and calculat
 INPUT: Parsed claim + eligibility data + payer fee schedules and medical necessity rules.
 
 ADJUDICATE:
-1. FEE_SCHEDULE — Look up allowed amount (contracted rate) for each CPT code by payer.
-2. BILLED_VS_ALLOWED — Compare billed charge to allowed amount. Calculate provider write-off.
-3. MEDICAL_NECESSITY — Check if diagnosis codes support the procedure (MCC/DCC alignment).
-4. BUNDLING/UNBUNDLING — Detect if multiple CPT codes should be bundled into one, or if unbundling is attempted.
-5. UPCODING — Detect if procedure code is higher than the service rendered (e.g., bilateral procedure billed as two separate).
-6. BENEFIT_APPLICATION — Apply deductible, co-insurance, co-pay to calculate patient responsibility and insurance payment.
-7. FLAGS — Unbundling detected, upcoding suspected, medical necessity issue, allowed amount is zero.
+1. FEE_SCHEDULE - Look up allowed amount (contracted rate) for each CPT code by payer.
+2. BILLED_VS_ALLOWED - Compare billed charge to allowed amount. Calculate provider write-off.
+3. MEDICAL_NECESSITY - Check if diagnosis codes support the procedure (MCC/DCC alignment).
+4. BUNDLING/UNBUNDLING - Detect if multiple CPT codes should be bundled into one, or if unbundling is attempted.
+5. UPCODING - Detect if procedure code is higher than the service rendered (e.g., bilateral procedure billed as two separate).
+6. BENEFIT_APPLICATION - Apply deductible, co-insurance, co-pay to calculate patient responsibility and insurance payment.
+7. FLAGS - Unbundling detected, upcoding suspected, medical necessity issue, allowed amount is zero.
 
 OUTPUT JSON SCHEMA:
 {
@@ -72,7 +72,7 @@ After the JSON, write: NEXT: DenialReasoningAgent"""
 
 META = {
     "label": "Adjudication",
-    "icon": "🔍",
+    "icon": "",
     "color": "#FF6B6B",
     "desc": "Apply fee schedules and calculate payments",
 }

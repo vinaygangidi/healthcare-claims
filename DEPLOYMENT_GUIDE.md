@@ -1,8 +1,8 @@
-# Healthcare Claims Processing — Deployment & Testing Guide
+# Healthcare Claims Processing - Deployment & Testing Guide
 
 ## Project Status
 
-✅ **Complete MVP** with backend + frontend, tested with real Azure OpenAI.
+ **Complete MVP** with backend + frontend, tested with real Azure OpenAI.
 
 ## Running Locally
 
@@ -47,12 +47,12 @@ Navigate to: **http://localhost:3001**
 2. Select "Sample 01: Clean Claims"
 3. Click "Process Claim"
 4. Watch agents stream in real-time:
-   - 🔹 Claim Parser — 0 flags
-   - 🔹 Eligibility — Eligible
-   - 🔹 Adjudication — APPROVED
-   - 🔹 Denial Reasoning — 0 denials
-   - 🔹 Remittance Posting — Payment calculated
-   - 🔹 Revenue Audit — 100% clean rate
+   -  Claim Parser - 0 flags
+   -  Eligibility - Eligible
+   -  Adjudication - APPROVED
+   -  Denial Reasoning - 0 denials
+   -  Remittance Posting - Payment calculated
+   -  Revenue Audit - 100% clean rate
 
 **Expected:** All 6 agents complete successfully, final result shows clean claim metrics.
 
@@ -113,7 +113,7 @@ List available test scenarios.
   "samples": [
     {
       "sample_id": "01",
-      "label": "Clean Claims — Single Payer, No Issues",
+      "label": "Clean Claims - Single Payer, No Issues",
       "claim_count": 5,
       "theme": "CLEAN"
     },
@@ -197,9 +197,9 @@ User Input (Sample)
 Process Endpoint (SSE)
         ↓
 Orchestrator Loop:
-    Agent 1 → results[1]
-    Agent 2 → results[2] (uses results[1])
-    Agent 3 → results[3] (uses results[1,2])
+    Agent 1 -> results[1]
+    Agent 2 -> results[2] (uses results[1])
+    Agent 3 -> results[3] (uses results[1,2])
     ... (Agent 4, 5, 6)
         ↓
 Frontend (SSE Listener)

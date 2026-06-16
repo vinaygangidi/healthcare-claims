@@ -1,26 +1,26 @@
-# Healthcare Claims Processing System — Complete Documentation Index
+# Healthcare Claims Processing System - Complete Documentation Index
 
-## 📚 Quick Navigation
+##  Quick Navigation
 
 ### Getting Started
-- **[QUICKSTART.md](QUICKSTART.md)** — 30-second local setup (START HERE)
-- **[README.md](README.md)** — Project overview and features
+- **[QUICKSTART.md](QUICKSTART.md)** - 30-second local setup (START HERE)
+- **[README.md](README.md)** - Project overview and features
 
 ### Architecture & Design
-- **[SYSTEM_DESIGN.md](SYSTEM_DESIGN.md)** — System architecture, data flow, compliance
-- **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** — What's built, status, next steps
+- **[SYSTEM_DESIGN.md](SYSTEM_DESIGN.md)** - System architecture, data flow, compliance
+- **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - What's built, status, next steps
 
 ### Testing & Validation
-- **[TEST_SCENARIOS.md](TEST_SCENARIOS.md)** — 5 test scenarios with edge cases (20 sample claims)
-- **[DATA_DICTIONARY.md](DATA_DICTIONARY.md)** — JSON schemas, code systems, data reference
-- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** — Local testing, API reference, troubleshooting
+- **[TEST_SCENARIOS.md](TEST_SCENARIOS.md)** - 5 test scenarios with edge cases (20 sample claims)
+- **[DATA_DICTIONARY.md](DATA_DICTIONARY.md)** - JSON schemas, code systems, data reference
+- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Local testing, API reference, troubleshooting
 
 ### Cloud Deployment
-- **[CLOUD_DEPLOYMENT.md](CLOUD_DEPLOYMENT.md)** — Railway & Vercel deployment guide
+- **[CLOUD_DEPLOYMENT.md](CLOUD_DEPLOYMENT.md)** - Railway & Vercel deployment guide
 
 ---
 
-## 🎯 Choose Your Path
+##  Choose Your Path
 
 ### Path 1: Just Want to Run It Locally?
 1. Read: **[QUICKSTART.md](QUICKSTART.md)** (2 min)
@@ -46,12 +46,12 @@
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 /Users/vgangidi/healthcare-claims/
-├── 📖 Documentation
-│   ├── INDEX.md ← YOU ARE HERE
+├──  Documentation
+│   ├── INDEX.md <- YOU ARE HERE
 │   ├── QUICKSTART.md
 │   ├── README.md
 │   ├── SYSTEM_DESIGN.md
@@ -61,12 +61,12 @@
 │   ├── DEPLOYMENT_GUIDE.md
 │   └── CLOUD_DEPLOYMENT.md
 │
-├── 🔧 Deployment Config
+├──  Deployment Config
 │   ├── Procfile
 │   ├── railway.json
 │   └── start.sh
 │
-├── 🐍 Backend (Python/FastAPI)
+├──  Backend (Python/FastAPI)
 │   └── backend/
 │       ├── main.py
 │       ├── Procfile
@@ -88,7 +88,7 @@
 │           ├── sample_04/ (NCCI)
 │           └── sample_05/ (Underpayment)
 │
-├── ⚛️ Frontend (React/Next.js)
+├──  Frontend (React/Next.js)
 │   └── frontend/
 │       ├── app/page.js
 │       ├── app/layout.js
@@ -99,31 +99,31 @@
 │       ├── package.json
 │       └── .gitignore
 │
-└── 📝 Git
+└──  Git
     └── .gitignore
 ```
 
 ---
 
-## 🚀 Deployment Status
+##  Deployment Status
 
 ### Local Development
-- ✅ **WORKING** — All 6 agents executing, real LLM calls
-- ✅ **TESTED** — Sample claims processing successfully
-- ✅ **READY** — Start commands: see QUICKSTART.md
+-  **WORKING** - All 6 agents executing, real LLM calls
+-  **TESTED** - Sample claims processing successfully
+-  **READY** - Start commands: see QUICKSTART.md
 
 ### Cloud Deployment
-- ✅ **CONFIGURED** — Procfile, railway.json, vercel.json ready
-- ✅ **DOCUMENTED** — Step-by-step guides in CLOUD_DEPLOYMENT.md
-- ⏳ **PENDING** — Manual deployment via web dashboards (5-10 min per service)
+-  **CONFIGURED** - Procfile, railway.json, vercel.json ready
+-  **DOCUMENTED** - Step-by-step guides in CLOUD_DEPLOYMENT.md
+-  **PENDING** - Manual deployment via web dashboards (5-10 min per service)
 
 ### Docker
-- ✅ **READY** — Can build & deploy to any container platform
-- ✅ **TESTED** — Docker patterns verified locally
+-  **READY** - Can build & deploy to any container platform
+-  **TESTED** - Docker patterns verified locally
 
 ---
 
-## 📊 Project Statistics
+##  Project Statistics
 
 **Code:**
 - Backend: 863 lines Python (6 agents + orchestrator + API)
@@ -146,7 +146,7 @@
 
 ---
 
-## ✅ System Checklist
+##  System Checklist
 
 - [x] 6 AI agents implemented
 - [x] Azure OpenAI integration
@@ -163,18 +163,18 @@
 
 ---
 
-## 🎓 Learning Resources
+##  Learning Resources
 
 This project demonstrates:
-- **Multi-agent AI systems** — Sequential orchestration, selective data passing
-- **Real-world domain knowledge** — Healthcare billing, claim adjudication
-- **Production architecture** — FastAPI, Next.js, SSE streaming
-- **Cloud deployment** — Railway, Vercel, Docker
-- **Documentation practices** — Comprehensive guides, API specs, testing procedures
+- **Multi-agent AI systems** - Sequential orchestration, selective data passing
+- **Real-world domain knowledge** - Healthcare billing, claim adjudication
+- **Production architecture** - FastAPI, Next.js, SSE streaming
+- **Cloud deployment** - Railway, Vercel, Docker
+- **Documentation practices** - Comprehensive guides, API specs, testing procedures
 
 ---
 
-## 🔗 External References
+##  External References
 
 - **Azure OpenAI:** https://azure.microsoft.com/en-us/products/ai-services/openai-service/
 - **Railway:** https://railway.app (backend deployment)
@@ -188,7 +188,7 @@ This project demonstrates:
 
 ---
 
-## 📞 Support
+##  Support
 
 For questions about:
 - **Local setup:** See [QUICKSTART.md](QUICKSTART.md)
@@ -199,8 +199,8 @@ For questions about:
 
 ---
 
-**Created:** June 2026  
-**Status:** ✅ Production Ready  
+**Created:** June 2026
+**Status:**  Production Ready
 **Repository:** `/Users/vgangidi/healthcare-claims/` (Local Git)
 
 **Next Step:** Open [QUICKSTART.md](QUICKSTART.md) and run the system!

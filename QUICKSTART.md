@@ -1,4 +1,4 @@
-# Quick Start — Healthcare Claims Processing
+# Quick Start - Healthcare Claims Processing
 
 ## 30-Second Setup
 
@@ -21,26 +21,26 @@ npm run dev -- -p 3001
 2. Select "Sample 01: Clean Claims"
 3. Click "Process Claim"
 4. Watch 6 agents stream in real-time:
-   - 🔹 Claim Parser
-   - 🔹 Eligibility
-   - 🔹 Adjudication
-   - 🔹 Denial Reasoning
-   - 🔹 Remittance Posting
-   - 🔹 Revenue Audit
+   -  Claim Parser
+   -  Eligibility
+   -  Adjudication
+   -  Denial Reasoning
+   -  Remittance Posting
+   -  Revenue Audit
 
 ## Files to Know
 
-- `backend/agents/*.py` — Agent implementations
-- `backend/main.py` — FastAPI server
-- `frontend/app/page.js` — React dashboard
-- `TEST_SCENARIOS.md` — What each scenario tests
-- `DEPLOYMENT_GUIDE.md` — Full setup & testing
+- `backend/agents/*.py` - Agent implementations
+- `backend/main.py` - FastAPI server
+- `frontend/app/page.js` - React dashboard
+- `TEST_SCENARIOS.md` - What each scenario tests
+- `DEPLOYMENT_GUIDE.md` - Full setup & testing
 
 ## Key Endpoints
 
-- `GET http://localhost:8002/health` — Service status
-- `GET http://localhost:8002/samples` — Available scenarios
-- `POST http://localhost:8002/process` — Process claim (SSE stream)
+- `GET http://localhost:8002/health` - Service status
+- `GET http://localhost:8002/samples` - Available scenarios
+- `POST http://localhost:8002/process` - Process claim (SSE stream)
 
 ## Troubleshooting
 

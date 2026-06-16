@@ -95,7 +95,7 @@ export default function Home() {
     <>
       <header>
         <div className="container">
-          <h1>💳 Healthcare Claims Processing</h1>
+          <h1>Healthcare Claims Processing</h1>
           <p>Multi-agent AI system for claim adjudication and denial management</p>
         </div>
       </header>
@@ -140,7 +140,7 @@ export default function Home() {
                   return (
                     <li key={agent} className={`agent-item ${statusClass}`}>
                       <span className="status-icon">
-                        {state.status === 'streaming' ? <span className="spinner" /> : state.status === 'complete' ? '✓' : state.status === 'error' ? '✗' : '○'}
+                        {state.status === 'streaming' ? <span className="spinner" /> : state.status === 'complete' ? '[OK]' : state.status === 'error' ? '[X]' : '[ ]'}
                       </span>
                       <span style={{ flex: 1 }}>
                         <strong>{state.label || agent}</strong>
@@ -159,7 +159,7 @@ export default function Home() {
 
             {!results && Object.keys(agentStates).length === 0 && (
               <div className="no-results">
-                <p>👈 Select a scenario and click "Process Claim" to see results</p>
+                <p>Select a scenario and click "Process Claim" to see results</p>
               </div>
             )}
 
@@ -300,7 +300,7 @@ export default function Home() {
                   <div>
                     {results.DenialReasoningAgent.total_denial_count === 0 ? (
                       <div className="no-results" style={{ background: '#dcfce7' }}>
-                        <p>✓ No denials for this claim</p>
+                        <p>No denials for this claim</p>
                       </div>
                     ) : (
                       <div className="table-container">

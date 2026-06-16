@@ -6,7 +6,7 @@
 
 ## Scenario 1: Clean Claims (20 claims)
 
-**Theme:** Baseline — all valid, no issues, straightforward payment
+**Theme:** Baseline - all valid, no issues, straightforward payment
 
 **Characteristics:**
 - Active patient coverage, effective date before DOS
@@ -68,7 +68,7 @@
 - OR service marked as "not medically necessary" by payer review
 - Denial code: CO-4 or CR-1 (medical necessity not met)
 
-**Example claim:** Knee MRI (73610) billed with diagnosis Z00.00 (encounter for preventive care) — needs clinical diagnosis
+**Example claim:** Knee MRI (73610) billed with diagnosis Z00.00 (encounter for preventive care) - needs clinical diagnosis
 
 ---
 
@@ -164,20 +164,20 @@ backend/data/samples/sample_NN/
 
 Single claim or array of claims. Fields:
 - `claim_id`, `control_number`, `submission_date`
-- `patient` — name, DOB, member_id, gender, relationship
-- `provider` — facility_npi, provider_npi, specialty
-- `service_lines[]` — CPT, ICD-10, units, charges, DOS, place_of_service
+- `patient` - name, DOB, member_id, gender, relationship
+- `provider` - facility_npi, provider_npi, specialty
+- `service_lines[]` - CPT, ICD-10, units, charges, DOS, place_of_service
 - `total_charge`
 
 ### payer_data.json
 
 - `plan_name`, `payer_name`
-- `patient_eligibility` — active, effective_date, termination_date
-- `coverage_rules` — deductible, copay, coinsurance, OOP max, exclusions
-- `fee_schedule` — CPT → allowed_amount mapping
-- `prior_auth_requirements[]` — which CPTs need pre-cert
-- `prior_auth_records[]` — existing approvals (empty for scenarios requiring auth)
-- `bundling_rules[]` — Medicare NCCI or payer-specific
+- `patient_eligibility` - active, effective_date, termination_date
+- `coverage_rules` - deductible, copay, coinsurance, OOP max, exclusions
+- `fee_schedule` - CPT -> allowed_amount mapping
+- `prior_auth_requirements[]` - which CPTs need pre-cert
+- `prior_auth_records[]` - existing approvals (empty for scenarios requiring auth)
+- `bundling_rules[]` - Medicare NCCI or payer-specific
 - `network_status`, `cob_rules` (for COB scenario)
 
 ---

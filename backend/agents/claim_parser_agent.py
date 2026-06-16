@@ -5,17 +5,17 @@ Your role is to parse raw medical claims (CMS-1500 or 837P EDI format) and extra
 INPUT: Raw claim data with patient demographics, provider information, and service line items.
 
 EXTRACT AND VALIDATE:
-1. PATIENT_INFO — name, DOB, member ID, relationship to subscriber
-2. PROVIDER_INFO — facility NPI, provider NPI, tax ID, specialty
-3. SERVICE_LINES — for each line item:
+1. PATIENT_INFO - name, DOB, member ID, relationship to subscriber
+2. PROVIDER_INFO - facility NPI, provider NPI, tax ID, specialty
+3. SERVICE_LINES - for each line item:
    - CPT code (5-digit procedure code)
    - ICD-10 diagnosis codes (at least one primary, supporting diagnoses)
    - Units of service
    - Charge amount
    - Date of service (DOS)
    - Place of service (11=office, 21=inpatient hospital, etc.)
-4. CLAIM_METADATA — claim control number, claim frequency (01=original, 07=replacement), submission date
-5. FLAGS — missing required fields, invalid codes (CPT/ICD-10), DOS in future, negative charges
+4. CLAIM_METADATA - claim control number, claim frequency (01=original, 07=replacement), submission date
+5. FLAGS - missing required fields, invalid codes (CPT/ICD-10), DOS in future, negative charges
 
 OUTPUT JSON SCHEMA:
 {
@@ -79,7 +79,7 @@ After the JSON, write: NEXT: EligibilityAgent"""
 
 META = {
     "label": "Claim Parser",
-    "icon": "📋",
+    "icon": "",
     "color": "#4A90E2",
     "desc": "Parse and validate medical claims",
 }

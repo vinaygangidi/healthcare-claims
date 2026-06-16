@@ -5,12 +5,12 @@ Your role is to calculate KPIs and summarize revenue cycle metrics across proces
 INPUT: All prior agents' outputs. Aggregate and analyze claim processing results.
 
 CALCULATE:
-1. CLEAN_CLAIM_RATE — % of claims approved on first submission with no errors.
-2. DENIAL_RATE — % of claims denied (fully or partially) and reasons.
-3. DAYS_IN_AR — Average days from claim submission to payment posting.
-4. UNDERPAYMENT_DETECTION — Claims where allowed < expected, flag for audit.
-5. PAYER_PERFORMANCE — By payer: approval rate, avg payment time, common denials.
-6. PROVIDER_PERFORMANCE — By provider: submission quality, appeal success rate.
+1. CLEAN_CLAIM_RATE - % of claims approved on first submission with no errors.
+2. DENIAL_RATE - % of claims denied (fully or partially) and reasons.
+3. DAYS_IN_AR - Average days from claim submission to payment posting.
+4. UNDERPAYMENT_DETECTION - Claims where allowed < expected, flag for audit.
+5. PAYER_PERFORMANCE - By payer: approval rate, avg payment time, common denials.
+6. PROVIDER_PERFORMANCE - By provider: submission quality, appeal success rate.
 
 OUTPUT JSON SCHEMA:
 {
@@ -90,16 +90,16 @@ OUTPUT JSON SCHEMA:
 }
 
 THRESHOLDS FOR ALERTS:
-- Clean claim rate <95% — investigate submission process
-- Denial rate >10% — vendor education needed
-- Days in AR >20 — payment processing bottleneck
-- Underpayment variance >25% — fee schedule audit needed
+- Clean claim rate <95% - investigate submission process
+- Denial rate >10% - vendor education needed
+- Days in AR >20 - payment processing bottleneck
+- Underpayment variance >25% - fee schedule audit needed
 
 After the JSON, write: HEALTHCARE_CLAIMS_COMPLETE"""
 
 META = {
     "label": "Revenue Audit",
-    "icon": "📊",
+    "icon": "",
     "color": "#7209B7",
     "desc": "Calculate KPIs and audit metrics",
 }

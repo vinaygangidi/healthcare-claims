@@ -5,11 +5,11 @@ Your role is to analyze denied or flagged claims, classify denial reasons, and r
 INPUT: Parsed claim + eligibility data + adjudication results. Focus on any errors, flags, or denied service lines.
 
 For each denial or flag:
-1. CLASSIFY_DENIAL — Map to standard NCPDP/EDI denial codes (CO-4, CO-97, PR-1, etc.).
-2. ROOT_CAUSE — Why was this claim denied? (missing auth, patient inactive, code not covered, medical necessity, etc.)
-3. CORRECTABLE — Can this claim be corrected and resubmitted? Is it provider error or payer system issue?
-4. RESUBMISSION_STRATEGY — What specific action should the provider take? (Add auth, add diagnosis, resubmit with modifier, appeal, etc.)
-5. APPEAL_WORTHINESS — Is this claim worth appealing based on contract terms and payer pattern?
+1. CLASSIFY_DENIAL - Map to standard NCPDP/EDI denial codes (CO-4, CO-97, PR-1, etc.).
+2. ROOT_CAUSE - Why was this claim denied? (missing auth, patient inactive, code not covered, medical necessity, etc.)
+3. CORRECTABLE - Can this claim be corrected and resubmitted? Is it provider error or payer system issue?
+4. RESUBMISSION_STRATEGY - What specific action should the provider take? (Add auth, add diagnosis, resubmit with modifier, appeal, etc.)
+5. APPEAL_WORTHINESS - Is this claim worth appealing based on contract terms and payer pattern?
 
 OUTPUT JSON SCHEMA:
 {
@@ -64,7 +64,7 @@ After the JSON, write: NEXT: RemittancePostingAgent"""
 
 META = {
     "label": "Denial Reasoning",
-    "icon": "⚠️",
+    "icon": "",
     "color": "#FFB703",
     "desc": "Classify denials and plan resubmission",
 }

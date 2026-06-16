@@ -1,7 +1,7 @@
 """
 Healthcare Claims Processing Pipeline Orchestrator
 
-Sequential pipeline: ClaimParser → Eligibility → Adjudication → DenialReasoning → RemittancePosting → RevenueAudit
+Sequential pipeline: ClaimParser -> Eligibility -> Adjudication -> DenialReasoning -> RemittancePosting -> RevenueAudit
 
 Each agent is stateless; outputs stored in all_results dict and selectively passed to next agent.
 """

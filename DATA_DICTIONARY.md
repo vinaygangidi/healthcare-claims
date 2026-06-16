@@ -1,4 +1,4 @@
-# Data Dictionary — Test Claims & Payer Data
+# Data Dictionary - Test Claims & Payer Data
 
 Quick reference for claim and payer data structure.
 
@@ -55,7 +55,7 @@ Quick reference for claim and payer data structure.
   "plan_name": "PPO Standard",
   "payer_name": "United Healthcare",
   "group_number": "GRP001",
-  
+
   "patient_eligibility": {
     "member_id": "MBR123456789",
     "effective_date": "2024-01-01",
@@ -64,7 +64,7 @@ Quick reference for claim and payer data structure.
     "relationship": "self|spouse|child",
     "coverage_type": "PPO|HMO|Medicare|Medicaid"
   },
-  
+
   "coverage_rules": {
     "deductible_individual": 1500.00,
     "deductible_family": 3000.00,
@@ -78,16 +78,16 @@ Quick reference for claim and payer data structure.
     "exclusions": [],                       // Services not covered
     "covered_services": [...]               // Services covered
   },
-  
+
   "fee_schedule": {
     "99213": {
       "allowed_amount": 120.00,              // Contracted fee
       "unit_value": 120.00,                  // Per unit
       "requires_modifier": false
     }
-    // Map CPT code → allowed amount
+    // Map CPT code -> allowed amount
   },
-  
+
   "prior_auth_requirements": [
     {
       "cpt_code": "27447",
@@ -95,7 +95,7 @@ Quick reference for claim and payer data structure.
       "requires_auth": true
     }
   ],
-  
+
   "prior_auth_records": [
     {
       "cpt_code": "27447",
@@ -105,7 +105,7 @@ Quick reference for claim and payer data structure.
       "approved": true
     }
   ],
-  
+
   "network_status": "in_network|out_of_network",
   "bundling_rules": [
     {

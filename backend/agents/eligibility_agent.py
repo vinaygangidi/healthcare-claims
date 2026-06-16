@@ -5,12 +5,12 @@ Your role is to validate patient insurance coverage and check payer-specific req
 INPUT: Parsed claim (from ClaimParserAgent) + payer plan data with coverage rules, fee schedules, prior auth records.
 
 VALIDATE:
-1. PATIENT_ELIGIBILITY — Is member active on the date of service? Check effective date, termination date.
-2. COVERAGE — Is each service line covered under the plan? Check benefit exclusions.
-3. PRIOR_AUTHORIZATION — Does this claim require prior auth? Is it already approved?
-4. COST_SHARING — Calculate patient responsibility: deductible, co-pay, co-insurance, out-of-pocket max.
-5. PAYER_RULES — Network status, pre-cert requirements, bundling rules specific to payer.
-6. FLAGS — Missing auth, patient ineligible, coverage terminated, plan exclusion.
+1. PATIENT_ELIGIBILITY - Is member active on the date of service? Check effective date, termination date.
+2. COVERAGE - Is each service line covered under the plan? Check benefit exclusions.
+3. PRIOR_AUTHORIZATION - Does this claim require prior auth? Is it already approved?
+4. COST_SHARING - Calculate patient responsibility: deductible, co-pay, co-insurance, out-of-pocket max.
+5. PAYER_RULES - Network status, pre-cert requirements, bundling rules specific to payer.
+6. FLAGS - Missing auth, patient ineligible, coverage terminated, plan exclusion.
 
 OUTPUT JSON SCHEMA:
 {
@@ -82,7 +82,7 @@ After the JSON, write: NEXT: AdjudicationAgent"""
 
 META = {
     "label": "Eligibility",
-    "icon": "✓",
+    "icon": "",
     "color": "#50C878",
     "desc": "Validate coverage and payer requirements",
 }

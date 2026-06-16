@@ -1,4 +1,4 @@
-# Cloud Deployment Guide — Railway & Vercel
+# Cloud Deployment Guide - Railway & Vercel
 
 ## Status
 
@@ -29,10 +29,10 @@ ngrok http 8002  # Get public URL for backend
 ### Current Configuration
 
 **Files:**
-- `railway.json` — Nixpacks build config with backend context
-- `Procfile` — Start command
-- `start.sh` — Shell script entry point
-- `backend/requirements.txt` — Python dependencies
+- `railway.json` - Nixpacks build config with backend context
+- `Procfile` - Start command
+- `start.sh` - Shell script entry point
+- `backend/requirements.txt` - Python dependencies
 
 ### Manual Deployment via Railway Dashboard
 
@@ -75,7 +75,7 @@ ngrok http 8002  # Get public URL for backend
 
 1. Go to [vercel.com](https://vercel.com)
 2. Sign in with GitHub account
-3. Import project → Select healthcare-claims repo
+3. Import project -> Select healthcare-claims repo
 4. Configure:
    - Framework: Next.js
    - Root directory: `frontend`
@@ -124,19 +124,19 @@ Deploy to any Docker-compatible platform (Railway, Render, Fly.io, GCP, AWS).
 
 ### What's Ready
 
-✓ Backend code optimized for deployment  
-✓ Frontend configured for cloud  
-✓ Environment variables documented  
-✓ Health endpoint functional  
-✓ Static assets optimized  
+ Backend code optimized for deployment
+ Frontend configured for cloud
+ Environment variables documented
+ Health endpoint functional
+ Static assets optimized
 
 ### What's Configured
 
-✓ Railway JSON for Nixpacks  
-✓ Vercel.json for Next.js  
-✓ Procfile for process managers  
-✓ .env.example for local/cloud  
-✓ .vercelignore for frontend build  
+ Railway JSON for Nixpacks
+ Vercel.json for Next.js
+ Procfile for process managers
+ .env.example for local/cloud
+ .vercelignore for frontend build
 
 ### Testing in Production
 

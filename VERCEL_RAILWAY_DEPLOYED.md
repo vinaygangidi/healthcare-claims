@@ -1,12 +1,12 @@
-# ✅ Deployment Status — Vercel & Railway
+#  Deployment Status - Vercel & Railway
 
-## Vercel Frontend — ✅ DEPLOYED
+## Vercel Frontend -  DEPLOYED
 
-**URL:** https://healthcare-claims.vercel.app ✨ (Clean, semantic URL)
+**URL:** https://healthcare-claims.vercel.app  (Clean, semantic URL)
 
-**Status:** Live and running  
-**Framework:** Next.js 14.2.35  
-**Build Time:** ~30 seconds  
+**Status:** Live and running
+**Framework:** Next.js 14.2.35
+**Build Time:** ~30 seconds
 **Environment:** NEXT_PUBLIC_BACKEND_URL (configured to https://healthcare-claims-api.railway.app)
 
 ### Test Frontend
@@ -18,7 +18,7 @@ Expected: HTML page loads successfully
 
 ---
 
-## Railway Backend — Ready for Deployment
+## Railway Backend - Ready for Deployment
 
 **Current Status:** Configuration files ready, manual deployment pending
 
@@ -26,7 +26,7 @@ Expected: HTML page loads successfully
 
 1. **Go to Railway Dashboard:**
    - https://railway.app/dashboard
-   - Create new project → "healthcare-claims-api"
+   - Create new project -> "healthcare-claims-api"
 
 2. **Connect GitHub Repository:**
    - If you push code to GitHub: Railway can auto-detect and deploy
@@ -82,16 +82,16 @@ Once backend is deployed, the complete system will be:
 ```
 Frontend (Vercel):
   https://frontend-fawn-psi-63.vercel.app
-  
+
 Backend (Railway):
   https://healthcare-claims-api-production.up.railway.app
-  
+
 Health Check:
   curl https://healthcare-claims-api-production.up.railway.app/health
-  
+
 Sample Data:
   curl https://healthcare-claims-api-production.up.railway.app/samples
-  
+
 Process Claim (SSE):
   curl -X POST https://healthcare-claims-api-production.up.railway.app/process \
     -H "Content-Type: application/json" \
@@ -106,14 +106,14 @@ Process Claim (SSE):
 ┌─────────────────────────────────────────────────┐
 │          Vercel (Frontend)                       │
 │  https://healthcare-claims.vercel.app          │
-│  ✅ DEPLOYED                                    │
+│   DEPLOYED                                    │
 └────────────────┬────────────────────────────────┘
                  │ HTTPS
                  ↓
 ┌─────────────────────────────────────────────────┐
 │          Railway (Backend)                       │
 │  https://healthcare-claims-api.railway.app     │
-│  ⏳ PENDING (Ready for manual deploy)           │
+│   PENDING (Ready for manual deploy)           │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -121,12 +121,12 @@ Process Claim (SSE):
 
 ## What's Working
 
-✅ **Frontend:**
+ **Frontend:**
 - Dashboard deployed and accessible
 - Real-time SSE connection code ready
 - Environment variable configured for Railway URL
 
-✅ **Backend:**
+ **Backend:**
 - Code optimized for deployment
 - Procfile configured for Railway
 - railway.json with build settings
@@ -134,7 +134,7 @@ Process Claim (SSE):
 - requirements.txt with all dependencies
 - .env template ready
 
-✅ **Docker:**
+ **Docker:**
 - Can build and deploy Docker images
 - Supports any container platform (Railway Docker, Render, Fly.io, etc.)
 
@@ -144,7 +144,7 @@ Process Claim (SSE):
 
 **Easiest Method:**
 1. Go to https://railway.app
-2. Dashboard → New Project
+2. Dashboard -> New Project
 3. Import repository OR upload backend/ folder
 4. Configure and deploy (takes ~2-3 minutes)
 5. Get URL and update frontend env vars if needed
@@ -153,12 +153,12 @@ Process Claim (SSE):
 
 ## Files Ready for Deployment
 
-- `backend/Procfile` — Process definition
-- `railway.json` — Build configuration
-- `start.sh` — Start script
-- `backend/requirements.txt` — Dependencies
-- `backend/.env` — Environment template
-- `Procfile` (root) — Fallback process definition
+- `backend/Procfile` - Process definition
+- `railway.json` - Build configuration
+- `start.sh` - Start script
+- `backend/requirements.txt` - Dependencies
+- `backend/.env` - Environment template
+- `Procfile` (root) - Fallback process definition
 
 ---
 
@@ -166,8 +166,8 @@ Process Claim (SSE):
 
 | Service | Platform | Status | URL |
 |---------|----------|--------|-----|
-| Frontend | Vercel | ✅ Deployed | https://healthcare-claims.vercel.app |
-| Backend | Railway | ⏳ Ready | Manual deploy needed → https://railway.app |
+| Frontend | Vercel |  Deployed | https://healthcare-claims.vercel.app |
+| Backend | Railway |  Ready | Manual deploy needed -> https://railway.app |
 
 **Total Deployment Time:** ~5 minutes (once Railway is set up)
 

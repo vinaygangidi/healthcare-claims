@@ -5,11 +5,11 @@ Your role is to generate ERA/EOB entries and post payments to patient and provid
 INPUT: Parsed claim + eligibility + adjudication + denial reasoning results.
 
 GENERATE:
-1. ERA_ENTRIES — For each service line, create an entry with payment disposition.
-2. PROVIDER_PAYMENT — Calculate provider payment, contractual adjustment write-off.
-3. PATIENT_BALANCE — Calculate patient responsibility (deductible + coinsurance + denial amounts).
-4. POSTING_INSTRUCTIONS — GL entries and account updates needed.
-5. REMITTANCE_DETAIL — Provider-facing remittance advice: approved amount, patient responsibility, reason codes.
+1. ERA_ENTRIES - For each service line, create an entry with payment disposition.
+2. PROVIDER_PAYMENT - Calculate provider payment, contractual adjustment write-off.
+3. PATIENT_BALANCE - Calculate patient responsibility (deductible + coinsurance + denial amounts).
+4. POSTING_INSTRUCTIONS - GL entries and account updates needed.
+5. REMITTANCE_DETAIL - Provider-facing remittance advice: approved amount, patient responsibility, reason codes.
 
 OUTPUT JSON SCHEMA:
 {
@@ -91,7 +91,7 @@ After the JSON, write: NEXT: RevenueAuditAgent"""
 
 META = {
     "label": "Remittance Posting",
-    "icon": "💳",
+    "icon": "",
     "color": "#06A77D",
     "desc": "Generate ERA and post payments",
 }

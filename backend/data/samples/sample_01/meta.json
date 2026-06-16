@@ -1,6 +1,6 @@
 {
   "sample_id": "01",
-  "label": "Clean Claims — Single Payer, No Issues",
+  "label": "Clean Claims - Single Payer, No Issues",
   "description": "Baseline scenario: valid patient, active coverage, all codes valid, no denials",
   "claim_count": 5,
   "theme": "CLEAN",

@@ -1,6 +1,6 @@
 {
   "sample_id": "05",
-  "label": "Underpayment & Contractual Adjustment — Variance Detection",
+  "label": "Underpayment & Contractual Adjustment - Variance Detection",
   "description": "Billed > Allowed; detect variance, calculate provider write-off, alert on underpayment",
   "claim_count": 4,
   "theme": "UNDERPAYMENT",

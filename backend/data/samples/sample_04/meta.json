@@ -1,6 +1,6 @@
 {
   "sample_id": "04",
-  "label": "Medicare/NCCI Edits — Coding Violations",
+  "label": "Medicare/NCCI Edits - Coding Violations",
   "description": "Unbundling, missing modifiers, bilateral codes, NCCI violations",
   "claim_count": 4,
   "theme": "NCCI",

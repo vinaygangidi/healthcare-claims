@@ -1,9 +1,9 @@
 {
   "sample_id": "02",
-  "label": "Denial Heavy — Common Rejection Scenarios",
+  "label": "Denial Heavy - Common Rejection Scenarios",
   "description": "Claims with missing auth, ineligibility, coverage exclusions, medical necessity issues",
   "claim_count": 5,
   "theme": "DENIAL",
   "expected_outcome": "Mix of full/partial denials with clear reason codes and resubmission guidance",
-  "notes": "Tests agent 4 (DenialReasoning) — classification and correctable vs hard denials"
+  "notes": "Tests agent 4 (DenialReasoning) - classification and correctable vs hard denials"
 }

@@ -1,11 +1,11 @@
-# Healthcare Claims Processing — System Design
+# Healthcare Claims Processing - System Design
 
 ## Architecture
 
 **6-agent sequential pipeline** processing healthcare claims through eligibility, adjudication, and denial management.
 
 ```
-ClaimParser → Eligibility → Adjudication → DenialReasoning → RemittancePosting → RevenueAudit
+ClaimParser -> Eligibility -> Adjudication -> DenialReasoning -> RemittancePosting -> RevenueAudit
     ↓            ↓              ↓               ↓                  ↓                 ↓
 Parse & flag   Check coverage  Fee schedule   Classify denials   Post payment    KPI summary
 ```
@@ -13,8 +13,8 @@ Parse & flag   Check coverage  Fee schedule   Classify denials   Post payment   
 ## Data Flow
 
 **Input:**
-- `claim_data` — raw claim (patient, provider, service lines with CPT/ICD-10, charges)
-- `payer_data` — insurance plan (coverage rules, fee schedules, prior auth records, eligibility snapshot)
+- `claim_data` - raw claim (patient, provider, service lines with CPT/ICD-10, charges)
+- `payer_data` - insurance plan (coverage rules, fee schedules, prior auth records, eligibility snapshot)
 
 **Flow:**
 1. Agent 1 parses claim, extracts structured data, flags missing/invalid fields
@@ -29,11 +29,11 @@ Parse & flag   Check coverage  Fee schedule   Classify denials   Post payment   
 ## Error Handling & Flags
 
 **Flag propagation:** FLAGS from each agent feed directly into next agent's decision logic.
-- Agent 1 → flags parse errors, invalid codes
-- Agent 2 → blocks processing if patient inactive or coverage denied
-- Agent 3 → detects unbundling, upcoding, zero-allowed amounts
-- Agent 4 → classifies which errors are correctable vs hard denials
-- Agent 5 → skips posting if any ERROR-severity flags present
+- Agent 1 -> flags parse errors, invalid codes
+- Agent 2 -> blocks processing if patient inactive or coverage denied
+- Agent 3 -> detects unbundling, upcoding, zero-allowed amounts
+- Agent 4 -> classifies which errors are correctable vs hard denials
+- Agent 5 -> skips posting if any ERROR-severity flags present
 
 **Backpressure:** If Agent 2 flags "PATIENT_INACTIVE", agents 3+ should still complete analysis (for auditing) but mark claim status as "HOLD".
 
@@ -89,9 +89,9 @@ Parse & flag   Check coverage  Fee schedule   Classify denials   Post payment   
 ## Access & Integration Points
 
 **Payer data sources:**
-- CMS RVS (Medicare fee schedule) — publicly available JSON/CSV
-- NCCI Edits (Medicare bundling rules) — publicly available, parsed into rule engine
-- Synthetic payer rules (United/Anthem/Blue Cross patterns) — hardcoded rule templates
+- CMS RVS (Medicare fee schedule) - publicly available JSON/CSV
+- NCCI Edits (Medicare bundling rules) - publicly available, parsed into rule engine
+- Synthetic payer rules (United/Anthem/Blue Cross patterns) - hardcoded rule templates
 
 **Real payer connections:** Optional. Phase 2 would integrate:
 - Medicare.gov API for real eligibility checks
@@ -121,7 +121,7 @@ Parse & flag   Check coverage  Fee schedule   Classify denials   Post payment   
 
 ## Phase 2 (Future)
 
-1. RevenueAuditAgent (agent 6) — KPI dashboards, payer performance scoring
+1. RevenueAuditAgent (agent 6) - KPI dashboards, payer performance scoring
 2. Real payer integrations (Medicare API, EDI 270/271)
 3. Database backend (claim history, provider performance, trending)
 4. Appeal workflow automation
