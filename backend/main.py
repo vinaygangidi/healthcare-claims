@@ -9,6 +9,7 @@ Exposes:
 """
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import os
@@ -23,6 +24,15 @@ load_dotenv()
 from agents.claims_pipeline import run_claims_pipeline
 
 app = FastAPI(title="Healthcare Claims Processing", version="0.1.0")
+
+# Allow the frontend (local dev + Vercel) to call this API from the browser
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Paths
 DATA_DIR = Path(__file__).parent / "data"

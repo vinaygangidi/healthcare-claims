@@ -17,7 +17,7 @@ export default function Home() {
     fetch(`${BACKEND_URL}/samples`)
       .then(r => r.json())
       .then(d => setSamples(d.samples || []))
-      .catch(console.error);
+      .catch(err => console.error('Error loading samples:', err));
   }, []);
 
   const processClaim = async () => {
