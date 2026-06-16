@@ -10,12 +10,14 @@ ClaimParser -> Eligibility -> Adjudication -> DenialReasoning -> RemittancePosti
 
 ### Agents
 
-1. **ClaimParserAgent**: Parse raw claims, validate CPT/ICD-10 codes, flag missing/invalid data
-2. **EligibilityAgent**: Validate patient coverage, check prior auth, calculate cost-sharing
-3. **AdjudicationAgent**: Apply fee schedules, detect unbundling/upcoding, calculate allowed amounts
-4. **DenialReasoningAgent**: Classify denials, recommend resubmission strategies
-5. **RemittancePostingAgent**: Generate ERA entries, post payments, calculate patient balance
-6. **RevenueAuditAgent**: Calculate KPIs such as clean claim rate, denial rate, days-in-AR, underpayments
+Each agent represents a role on a healthcare revenue-cycle team, with a persona that frames how it reasons.
+
+1. **ClaimParserAgent** (Sofia, Claims Intake Specialist): Parse raw claims, validate CPT/ICD-10 codes, flag missing/invalid data
+2. **EligibilityAgent** (David, Coverage and Benefits Analyst): Validate patient coverage, check prior auth, calculate cost-sharing
+3. **AdjudicationAgent** (Maria, Senior Claims Adjudicator): Apply fee schedules, detect unbundling/upcoding, calculate allowed amounts
+4. **DenialReasoningAgent** (James, Denials Management Specialist): Classify denials, recommend resubmission strategies
+5. **RemittancePostingAgent** (Priya, Payment Posting Specialist): Generate ERA entries, post payments, calculate patient balance
+6. **RevenueAuditAgent** (Alex, Revenue Cycle Analyst): Calculate KPIs such as clean claim rate, denial rate, days-in-AR, underpayments
 
 ## Getting Started
 

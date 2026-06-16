@@ -6,9 +6,22 @@
 
 ```
 ClaimParser -> Eligibility -> Adjudication -> DenialReasoning -> RemittancePosting -> RevenueAudit
-    ↓            ↓              ↓               ↓                  ↓                 ↓
+   |             |              |               |                  |                 |
 Parse & flag   Check coverage  Fee schedule   Classify denials   Post payment    KPI summary
 ```
+
+Each agent represents a healthcare revenue-cycle role (persona):
+
+| Agent | Persona |
+|-------|---------|
+| ClaimParser | Sofia, Claims Intake Specialist |
+| Eligibility | David, Coverage and Benefits Analyst |
+| Adjudication | Maria, Senior Claims Adjudicator |
+| DenialReasoning | James, Denials Management Specialist |
+| RemittancePosting | Priya, Payment Posting Specialist |
+| RevenueAudit | Alex, Revenue Cycle Analyst |
+
+The persona is part of each agent's system prompt, so the model reasons in that role's voice.
 
 ## Data Flow
 
