@@ -42,7 +42,12 @@ AGENT_ORDER = [
 
 
 def _extract_json(text: str) -> dict:
-    """Extract JSON from LLM response, stripping markdown fences."""
+    """Extract the first complete JSON object from an LLM response.
+
+    Handles markdown fences and any trailing text the model appends after the
+    JSON (e.g. a "NEXT: AgentName" line or commentary), which would otherwise
+    raise "Extra data" from json.loads.
+    """
     text = text.strip()
     if text.startswith("```"):
         text = text.split("```")[1]
@@ -50,10 +55,20 @@ def _extract_json(text: str) -> dict:
             text = text[4:]
         text = text.strip()
     start = text.find("{")
-    end = text.rfind("}") + 1
-    if start >= 0 and end > start:
-        return json.loads(text[start:end])
-    return {}
+    if start < 0:
+        return {}
+    # Use raw_decode so parsing stops at the end of the first complete object
+    # and any trailing content is ignored.
+    decoder = json.JSONDecoder()
+    try:
+        obj, _ = decoder.raw_decode(text[start:])
+        return obj
+    except json.JSONDecodeError:
+        # Fallback: try the widest brace span
+        end = text.rfind("}") + 1
+        if end > start:
+            return json.loads(text[start:end])
+        return {}
 
 
 def _user_content(agent_name: str, all_results: dict, claim_data: dict, payer_data: dict) -> str:
