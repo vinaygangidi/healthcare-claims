@@ -1,21 +1,21 @@
-# Healthcare Claims Processing — Multi-Agent Pipeline
+# Healthcare Claims Processing - Multi-Agent Pipeline
 
 A 6-agent AI system for automating healthcare claims submission, eligibility verification, adjudication, and denial management.
 
 ## Architecture
 
 ```
-ClaimParser → Eligibility → Adjudication → DenialReasoning → RemittancePosting → RevenueAudit
+ClaimParser -> Eligibility -> Adjudication -> DenialReasoning -> RemittancePosting -> RevenueAudit
 ```
 
 ### Agents
 
-1. **ClaimParserAgent** — Parse raw claims, validate CPT/ICD-10 codes, flag missing/invalid data
-2. **EligibilityAgent** — Validate patient coverage, check prior auth, calculate cost-sharing
-3. **AdjudicationAgent** — Apply fee schedules, detect unbundling/upcoding, calculate allowed amounts
-4. **DenialReasoningAgent** — Classify denials, recommend resubmission strategies
-5. **RemittancePostingAgent** — Generate ERA entries, post payments, calculate patient balance
-6. **RevenueAuditAgent** — Calculate KPIs: clean claim rate, denial rate, days-in-AR, underpayments
+1. **ClaimParserAgent**: Parse raw claims, validate CPT/ICD-10 codes, flag missing/invalid data
+2. **EligibilityAgent**: Validate patient coverage, check prior auth, calculate cost-sharing
+3. **AdjudicationAgent**: Apply fee schedules, detect unbundling/upcoding, calculate allowed amounts
+4. **DenialReasoningAgent**: Classify denials, recommend resubmission strategies
+5. **RemittancePostingAgent**: Generate ERA entries, post payments, calculate patient balance
+6. **RevenueAuditAgent**: Calculate KPIs such as clean claim rate, denial rate, days-in-AR, underpayments
 
 ## Getting Started
 
@@ -39,12 +39,12 @@ python -m uvicorn main:app --reload --port 8001
 
 ### API Endpoints
 
-- `GET /health` — Service status
-- `GET /samples` — List sample datasets
-- `GET /demo-data?sample=01` — Load sample claim and payer data
-- `POST /process` — Submit claim for processing (SSE stream response)
+- `GET /health`: Service status
+- `GET /samples`: List sample datasets
+- `GET /demo-data?sample=01`: Load sample claim and payer data
+- `POST /process`: Submit claim for processing (SSE stream response)
 
-### Frontend Setup (Coming Soon)
+### Frontend Setup
 
 ```bash
 cd frontend
@@ -56,11 +56,11 @@ npm run dev
 
 Sample datasets in `backend/data/samples/`:
 
-- **sample_01** — Clean claims (baseline)
-- **sample_02** — Denial heavy
-- **sample_03** — Coordination of benefits (COB)
-- **sample_04** — Medicare/NCCI edits
-- **sample_05** — Underpayment & writeoff
+- **sample_01**: Clean claims (baseline)
+- **sample_02**: Denial heavy
+- **sample_03**: Coordination of benefits (COB)
+- **sample_04**: Medicare/NCCI edits
+- **sample_05**: Underpayment and writeoff
 
 ## Design
 
@@ -84,17 +84,16 @@ See [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) for detailed architecture, data flow, a
 
 - **Backend:** FastAPI, Python
 - **LLM:** Azure OpenAI GPT-4o / GPT-4o-mini
-- **Frontend:** Next.js, React (coming soon)
+- **Frontend:** Next.js, React
 - **Orchestration:** Python async/await, SSE streaming
 
 ## Status
 
-- ✅ 6 agents defined with prompts
-- ✅ Orchestrator with SSE streaming
-- ✅ Sample test data (sample_01)
-- ⏳ Frontend (React dashboard)
-- ⏳ Additional test scenarios (samples 02-05)
-- ⏳ Real payer integrations (Medicare API, EDI)
+- 6 agents defined with prompts
+- Orchestrator with SSE streaming
+- Sample test data (samples 01-05)
+- Frontend React dashboard
+- Real payer integrations (Medicare API, EDI) planned
 
 ## License
 
