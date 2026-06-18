@@ -374,8 +374,11 @@ export default function Home() {
 
     const claimStatus = adj.adjudication_status || (elig.is_eligible === false ? 'DENIED' : 'PENDING');
     const denialCount = denial.total_denial_count || 0;
-    const insPayment = posting.claim_totals?.total_insurance_pays ?? adj.claim_totals?.total_insurance_pays ?? null;
-    const patientResp = posting.claim_totals?.total_patient_responsibility ?? null;
+    const pt = posting.claim_totals || {};
+    const at = adj.claim_totals || {};
+    const insPayment = pt.total_insurance_pays ?? pt.primary_insurance_pays ?? pt.insurance_payment ?? pt.total_paid
+      ?? at.total_insurance_pays ?? null;
+    const patientResp = pt.total_patient_responsibility ?? pt.patient_responsibility ?? pt.patient_balance ?? null;
     const cleanRate = audit.overall_metrics?.clean_claim_rate_pct ?? null;
     const rootIssue = denialCount > 0
       ? (denial.denials?.[0]?.root_cause || 'See denial tab')
@@ -791,14 +794,18 @@ export default function Home() {
                             </div>
                           </div>
                         )}
-                        {results?.RemittancePostingAgent && (
-                          <div className="metric-card">
-                            <h3>Ins. Pays</h3>
-                            <div className="value green">
-                              ${results.RemittancePostingAgent.claim_totals?.total_insurance_pays?.toFixed(0)}
+                        {results?.RemittancePostingAgent && (() => {
+                          const t = results.RemittancePostingAgent.claim_totals || {};
+                          const v = t.total_insurance_pays ?? t.primary_insurance_pays ?? t.insurance_payment ?? t.total_paid ?? null;
+                          return (
+                            <div className="metric-card">
+                              <h3>Payer Remittance</h3>
+                              <div className="value green">
+                                {v != null ? `$${Number(v).toFixed(0)}` : 'n/a'}
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          );
+                        })()}
                       </div>
                     </div>
                   )}
@@ -860,8 +867,10 @@ export default function Home() {
                   {/* Denials */}
                   {activeTab === 'denial' && results?.DenialReasoningAgent && (
                     results.DenialReasoningAgent.total_denial_count === 0 ? (
-                      <div className="no-results" style={{ background: 'rgba(74,222,128,0.05)', border: '1px solid rgba(74,222,128,0.2)', borderRadius: '8px' }}>
-                        <p style={{ color: '#4ade80' }}>No denials detected for this claim.</p>
+                      <div className="no-denials-box">
+                        <div className="no-denials-icon">✓</div>
+                        <div className="no-denials-text">No denials detected for this claim.</div>
+                        <div className="no-denials-sub">All service lines cleared adjudication without denial flags.</div>
                       </div>
                     ) : (
                       <div className="table-container">
@@ -886,34 +895,98 @@ export default function Home() {
                   )}
 
                   {/* Payment Posting */}
-                  {activeTab === 'posting' && results?.RemittancePostingAgent && (
-                    <div>
-                      <div className="posting-summary">
-                        <div className="posting-card insurance">
-                          <div className="p-label">Insurance Pays</div>
-                          <div className="p-value">${results.RemittancePostingAgent.claim_totals?.total_insurance_pays?.toFixed(2)}</div>
+                  {activeTab === 'posting' && results?.RemittancePostingAgent && (() => {
+                    const post = results.RemittancePostingAgent;
+                    const totals = post.claim_totals || {};
+                    // Field names vary by agent run -- try all known aliases
+                    const insPays = totals.total_insurance_pays
+                      ?? totals.primary_insurance_pays
+                      ?? totals.insurance_payment
+                      ?? totals.total_paid
+                      ?? null;
+                    const patResp = totals.total_patient_responsibility
+                      ?? totals.patient_responsibility
+                      ?? totals.patient_balance
+                      ?? null;
+                    const billed = totals.total_billed ?? totals.total_charge ?? null;
+                    const writeoff = totals.total_writeoff ?? totals.contractual_adjustment ?? null;
+                    return (
+                      <div>
+                        {/* Perspective label -- makes clear this is the provider/hospital ledger */}
+                        <div className="posting-perspective">
+                          Provider Revenue Ledger
+                          <span className="posting-perspective-note">
+                            This is what the hospital or provider posts to its AR system after the payer remits payment. "Payer Remittance" is money received from the insurance company. "Patient Balance" is the remaining amount billed to the patient.
+                          </span>
                         </div>
-                        <div className="posting-card patient">
-                          <div className="p-label">Patient Responsibility</div>
-                          <div className="p-value">${results.RemittancePostingAgent.claim_totals?.total_patient_responsibility?.toFixed(2)}</div>
+
+                        <div className="posting-summary">
+                          <div className="posting-card insurance">
+                            <div className="p-label">Payer Remittance</div>
+                            <div className="p-value">
+                              {insPays != null ? `$${Number(insPays).toFixed(2)}` : 'See GL below'}
+                            </div>
+                            <div className="p-sub">Received from insurance</div>
+                          </div>
+                          <div className="posting-card patient">
+                            <div className="p-label">Patient Balance Due</div>
+                            <div className="p-value">
+                              {patResp != null ? `$${Number(patResp).toFixed(2)}` : 'See GL below'}
+                            </div>
+                            <div className="p-sub">Copay + coinsurance + deductible</div>
+                          </div>
+                          {billed != null && (
+                            <div className="posting-card neutral">
+                              <div className="p-label">Total Billed</div>
+                              <div className="p-value">${Number(billed).toFixed(2)}</div>
+                              <div className="p-sub">Gross charge submitted</div>
+                            </div>
+                          )}
+                          {writeoff != null && (
+                            <div className="posting-card writeoff">
+                              <div className="p-label">Contractual Writeoff</div>
+                              <div className="p-value">${Number(writeoff).toFixed(2)}</div>
+                              <div className="p-sub">Difference between billed and allowed</div>
+                            </div>
+                          )}
                         </div>
+
+                        <div className="gl-label">General Ledger Entries (Provider Accounting)</div>
+                        <table>
+                          <thead>
+                            <tr><th>Account</th><th>Entry Type</th><th>Amount</th><th>What This Means</th></tr>
+                          </thead>
+                          <tbody>
+                            {post.gl_entries?.map((e, i) => {
+                              const isDebit = (e.debit || 0) > 0;
+                              const amt = Math.abs(e.debit || e.credit || 0);
+                              const meaning = e.account_name?.toLowerCase().includes('revenue')
+                                ? 'Earned revenue recognized on the claim'
+                                : e.account_name?.toLowerCase().includes('cash') || e.account_name?.toLowerCase().includes('payment')
+                                  ? 'Cash received from payer'
+                                  : e.account_name?.toLowerCase().includes('receivable')
+                                    ? 'Amount still owed by patient'
+                                    : e.account_name?.toLowerCase().includes('write') || e.account_name?.toLowerCase().includes('adjust')
+                                      ? 'Contractual discount written off'
+                                      : '';
+                              return (
+                                <tr key={i}>
+                                  <td>{e.account_name}</td>
+                                  <td>
+                                    <span className={`badge ${isDebit ? 'approved' : 'clean'}`}>
+                                      {isDebit ? 'Debit' : 'Credit'}
+                                    </span>
+                                  </td>
+                                  <td><strong>${amt.toFixed(2)}</strong></td>
+                                  <td style={{ fontSize: '11px', color: '#78716c' }}>{meaning}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
                       </div>
-                      <table>
-                        <thead>
-                          <tr><th>Account</th><th>Type</th><th>Amount</th></tr>
-                        </thead>
-                        <tbody>
-                          {results.RemittancePostingAgent.gl_entries?.map((e, i) => (
-                            <tr key={i}>
-                              <td>{e.account_name}</td>
-                              <td>{e.debit > 0 ? 'Debit' : 'Credit'}</td>
-                              <td>${Math.abs(e.debit || e.credit || 0).toFixed(2)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
+                    );
+                  })()}
 
                   {/* Revenue Audit */}
                   {activeTab === 'audit' && results?.RevenueAuditAgent && (
