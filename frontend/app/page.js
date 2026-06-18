@@ -43,6 +43,53 @@ const SCENARIO_STORIES = {
   },
 };
 
+// Compliance and governance content for both business and technical audiences
+const COMPLIANCE = {
+  notice: 'This demo processes synthetic data only. No real Protected Health Information (PHI) is used. A production deployment requires the additional controls described below.',
+
+  hipaa: {
+    title: 'HIPAA Compliance',
+    business: 'HIPAA requires that any vendor handling patient health information signs a Business Associate Agreement (BAA). Microsoft Azure offers a HIPAA BAA that covers Azure OpenAI, Azure Monitor, and Azure Storage -- the three services this pipeline depends on. This means the AI models processing your claims data operate under the same legal obligations as your own systems. Every agent decision is traceable, every data access is logged, and no PHI leaves the Azure boundary.',
+    technical: 'Azure OpenAI is HIPAA-eligible under the Microsoft Online Services BAA. Deploy the endpoint in a private Azure Virtual Network with no public internet exposure. Enable Azure Private Link so all API calls stay within the Azure backbone. Set data_zone=US to ensure all inference happens in US regions. Disable model training on your data (off by default for Azure OpenAI).',
+    controls: ['Azure HIPAA BAA covers Azure OpenAI', 'Private VNet deployment, no public endpoint', 'US-only data residency enforcement', 'Model training on customer data: disabled by default', 'TLS 1.2+ in transit, AES-256 at rest'],
+  },
+
+  phi: {
+    title: 'PHI and Patient Data Protection',
+    business: 'Each AI agent in this pipeline receives only the patient data it needs to do its job -- nothing more. The eligibility agent does not see provider tax IDs. The audit agent does not see patient names. This principle, called minimum necessary access, is a HIPAA requirement and a cornerstone of responsible AI. In production, patient names and dates of birth would be tokenized before reaching the AI layer, with de-identification handled by a separate service that holds the mapping table.',
+    technical: 'Implement field-level access control in the orchestrator: the _user_content function already cherry-picks fields per agent. Extend this with a PHI tokenization layer: replace patient.name with a UUID, replace member_id with a one-way hash, pass the mapping to a secure vault (Azure Key Vault). The AI never sees raw PII. Logs are written with the tokenized identifiers only. De-tokenization happens only at the final output layer, not inside any agent.',
+    controls: ['Minimum necessary data per agent (already implemented in _user_content)', 'PHI tokenization before LLM ingestion (production requirement)', 'Azure Key Vault for token-to-PHI mapping', 'Patient name and DOB masked in all log outputs', 'Member ID one-way hashed in audit trail'],
+  },
+
+  audit: {
+    title: 'Audit Logs and Decision Traceability',
+    business: 'Every claim adjudication decision made by an AI agent must be explainable. Regulators, payers, and patients have the right to know why a claim was denied. This system is designed so that every agent produces a structured reasoning output -- not just an answer, but the rule it applied, the data it examined, and the conclusion it reached. These outputs form an immutable audit trail that satisfies HIPAA record retention (6 years) and CMS audit requirements. If a claim is ever challenged, you can replay exactly what the AI decided and why.',
+    technical: 'Each agent_start, agent_complete, and pipeline_complete SSE event contains the full input context, model used, and structured output. In production, pipe these events to Azure Event Hub, then to Azure Monitor Logs (Log Analytics workspace). Set immutable storage policy on the workspace (WORM: write once, read many). Tag each log entry with claim_id, agent_name, model_version, timestamp_utc, and operator_user_id. Retention minimum: 6 years per HIPAA 164.530. Query audit trail via KQL: AzureDiagnostics | where claim_id == "CLM-001".',
+    controls: ['Structured JSON output from every agent (reason + rule + conclusion)', 'Azure Event Hub ingest for real-time audit stream', 'Azure Monitor Log Analytics with WORM immutable storage', '6-year retention policy (HIPAA 164.530 requirement)', 'Per-agent timestamps, model version, and token count logged', 'Claim-level audit replay capability for regulatory review'],
+  },
+
+  security: {
+    title: 'Data Security and Access Control',
+    business: 'Access to the claims pipeline is controlled by role. A billing coder can submit claims but cannot see adjudication financials. A compliance officer can read audit logs but cannot trigger reprocessing. A revenue cycle analyst sees KPIs but not individual patient records. These role boundaries are enforced by the platform, not by trusting users to do the right thing. The AI agents themselves have no persistent memory -- they cannot accumulate patient data across runs.',
+    technical: 'Implement Azure Active Directory (Entra ID) RBAC with custom roles: ClaimsSubmitter, AdjudicationViewer, AuditReader, RCMAnalyst. Assign roles at the Azure resource group level. The FastAPI backend validates the Bearer token on every request and checks role claims before invoking the pipeline. Each Azure OpenAI call uses a managed identity (no API keys in code or environment variables in production). Apply Azure Policy to deny any deployment that does not have diagnostic logging enabled.',
+    controls: ['Azure Entra ID RBAC with claim-specific roles', 'Managed identity for Azure OpenAI auth (no API keys in prod)', 'Per-request token validation in FastAPI middleware', 'Agent statelessness: no cross-run memory or data accumulation', 'Azure Policy enforcement on all resource deployments', 'Network isolation: NSG rules restricting pipeline backend to internal traffic only'],
+  },
+
+  governance: {
+    title: 'Data Governance and Model Accountability',
+    business: 'AI-assisted claim decisions are not black boxes. Every recommendation made by this pipeline -- approved, denied, flagged -- carries a human-readable explanation. A compliance officer or billing manager can read the Denial Prevention agent output and understand exactly which rule triggered the denial and what the resubmission path is. The system is also designed for human-in-the-loop review: high-value claims above a configurable threshold, or any claim with an ERROR-severity flag, can be automatically routed to a human reviewer before posting.',
+    technical: 'Model governance via Azure AI Foundry model registry: pin each agent to a specific model version (e.g., gpt-4o-2024-11-20) and gate version upgrades behind a validation pipeline. Track model drift by logging denial rate and clean claim rate per model version -- a sudden change signals a model behavior shift. Implement human-in-the-loop via a review_required flag in the pipeline output: if AdjudicationAgent.claim_totals.total_billed > threshold OR any ERROR flag present, emit a pending_review event instead of auto-posting. Store pending claims in an Azure Service Bus queue for reviewer pickup.',
+    controls: ['Model version pinning in Azure AI Foundry registry', 'Model drift detection via KPI trending per model version', 'Human-in-the-loop routing for high-value or flagged claims', 'Explainable output: every agent emits rule reference + reasoning', 'Configurable auto-posting threshold (default: manual review above $10k)', 'Azure Service Bus queue for pending human review items'],
+  },
+
+  businessContext: {
+    title: 'Claims Business Context and Rules Engine',
+    business: 'Healthcare claims do not exist in a vacuum. Every payer has its own rules: Blue Cross applies different fee schedules than Medicare; a procedure covered in California may be excluded in Texas; a prior auth approved last month may have expired. This pipeline is designed to carry that business context as structured data that travels with the claim through every agent. The payer_data object holds the fee schedule, bundling rules, coverage exclusions, and prior auth records specific to that payer and plan. Agents reason against real business rules, not generic knowledge.',
+    technical: 'The payer_data structure is the rule context injected into each agent prompt. In production, replace the static JSON files with a live payer rules API: Medicare fee schedules from CMS RVS API (updated quarterly), commercial payer rules from a clearinghouse integration (Availity, Change Healthcare), and plan-specific rules from a payer configuration database. The orchestrator fetches current rules at claim submission time and attaches them to the pipeline context. Rules are versioned: if a fee schedule changes mid-quarter, old claims retain the rule set that was active on their date of service.',
+    controls: ['Payer-specific fee schedules, bundling rules, and exclusions per agent context', 'Rules versioned by effective date (date-of-service rule set, not submission-date)', 'CMS RVS API integration for Medicare fee schedules (production roadmap)', 'Clearinghouse integration for real-time eligibility (270/271 EDI)', 'Plan configuration database for commercial payer rule management', 'Audit log records which rule version was applied to each claim decision'],
+  },
+};
+
 // What each agent does technically and which Azure model and why
 const AGENT_TECH = {
   ClaimParserAgent: {
@@ -145,6 +192,9 @@ export default function Home() {
   const [liveTokens, setLiveTokens] = useState('');
   const [handoffs, setHandoffs] = useState([]);
   const [showTechStack, setShowTechStack] = useState(false);
+  const [showCompliance, setShowCompliance] = useState(false);
+  const [complianceTab, setComplianceTab] = useState('business');
+  const [auditTrail, setAuditTrail] = useState([]);
   const runStartRef = useRef(null);
   const timerRef = useRef(null);
   const [timerMs, setTimerMs] = useState(0);
@@ -167,6 +217,7 @@ export default function Home() {
     setActiveAgent(null);
     setLiveTokens('');
     setHandoffs([]);
+    setAuditTrail([]);
     setTimerMs(0);
     setActiveTab('overview');
 
@@ -207,6 +258,15 @@ export default function Home() {
               setAgentStartTimes(prev => ({ ...prev, [event.agent]: Date.now() }));
               setActiveAgent(event.agent);
               setLiveTokens('');
+              // Audit log entry: agent invoked
+              setAuditTrail(prev => [...prev, {
+                type: 'invoke',
+                agent: event.agent,
+                label: AGENT_BIZ_LABELS[event.agent],
+                model: event.model,
+                persona: event.persona,
+                ts: new Date().toISOString(),
+              }]);
               setAgentStates(prev => ({
                 ...prev,
                 [event.agent]: {
@@ -238,6 +298,28 @@ export default function Home() {
                 : null;
               setAgentElapsed(prev => ({ ...prev, [event.agent]: elapsed }));
               setActiveAgent(null);
+              // Audit log entry: agent completed with decision summary
+              const out = event.output || {};
+              const decisonSummary = out.adjudication_status || out.is_eligible !== undefined
+                ? (out.is_eligible ? 'ELIGIBLE' : 'INELIGIBLE')
+                : out.total_denial_count !== undefined
+                  ? `${out.total_denial_count} denial(s)`
+                  : out.overall_metrics
+                    ? `Clean rate: ${out.overall_metrics.clean_claim_rate_pct?.toFixed(1)}%`
+                    : out.claim_totals
+                      ? `Posted: $${out.claim_totals.total_insurance_pays?.toFixed(2)}`
+                      : out.is_clean !== undefined
+                        ? (out.is_clean ? 'CLEAN' : 'FLAGGED')
+                        : 'complete';
+              setAuditTrail(prev => [...prev, {
+                type: 'complete',
+                agent: event.agent,
+                label: AGENT_BIZ_LABELS[event.agent],
+                decision: decisonSummary,
+                flags: out.flags?.length || 0,
+                elapsed,
+                ts: new Date().toISOString(),
+              }]);
               setAgentStates(prev => ({
                 ...prev,
                 [event.agent]: { ...prev[event.agent], status: 'complete', output: event.output },
@@ -539,6 +621,100 @@ export default function Home() {
                   );
                 })}
               </div>
+            </div>
+          )}
+        </div>
+
+        {/* Compliance and Governance Panel */}
+        <div className="compliance-section">
+          <button className="compliance-toggle" onClick={() => setShowCompliance(s => !s)}>
+            <div className="compliance-toggle-left">
+              <span className="compliance-shield">HIPAA</span>
+              <span className="compliance-toggle-title">Compliance, Data Governance and Patient Privacy</span>
+            </div>
+            <span className="compliance-toggle-icon">{showCompliance ? 'v' : '>'}</span>
+          </button>
+
+          {showCompliance && (
+            <div className="compliance-body">
+              <div className="compliance-notice">
+                <strong>Demo Notice:</strong> {COMPLIANCE.notice}
+              </div>
+
+              {/* Business / Technical toggle */}
+              <div className="compliance-audience-tabs">
+                <button
+                  className={`compliance-audience-btn ${complianceTab === 'business' ? 'active' : ''}`}
+                  onClick={() => setComplianceTab('business')}
+                >
+                  Business View
+                </button>
+                <button
+                  className={`compliance-audience-btn ${complianceTab === 'technical' ? 'active' : ''}`}
+                  onClick={() => setComplianceTab('technical')}
+                >
+                  Technical View
+                </button>
+              </div>
+
+              <div className="compliance-grid">
+                {Object.values(COMPLIANCE).filter(v => v.title).map((section, i) => (
+                  <div key={i} className="compliance-card">
+                    <div className="compliance-card-title">{section.title}</div>
+                    <p className="compliance-card-text">
+                      {complianceTab === 'business' ? section.business : section.technical}
+                    </p>
+                    <div className="compliance-controls">
+                      {section.controls.map((c, j) => (
+                        <div key={j} className="compliance-control-item">
+                          <span className="compliance-check">OK</span>
+                          <span>{c}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Per-run audit trail */}
+              {auditTrail.length > 0 && (
+                <div className="audit-trail-section">
+                  <div className="audit-trail-title">
+                    Simulated Audit Trail for This Run
+                    <span className="audit-trail-note">In production this writes to Azure Monitor Log Analytics with WORM immutable storage</span>
+                  </div>
+                  <div className="audit-trail-table-wrap">
+                    <table className="audit-trail-table">
+                      <thead>
+                        <tr>
+                          <th>Timestamp (UTC)</th>
+                          <th>Event</th>
+                          <th>Agent</th>
+                          <th>Model</th>
+                          <th>Decision / Outcome</th>
+                          <th>Elapsed</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {auditTrail.map((entry, i) => (
+                          <tr key={i} className={entry.type === 'complete' ? 'audit-complete' : 'audit-invoke'}>
+                            <td className="audit-ts">{entry.ts.replace('T', ' ').slice(0, 23)}</td>
+                            <td>
+                              <span className={`audit-event-badge ${entry.type}`}>
+                                {entry.type === 'invoke' ? 'INVOKED' : 'COMPLETE'}
+                              </span>
+                            </td>
+                            <td>{entry.label}</td>
+                            <td className="audit-model">{entry.model || ''}</td>
+                            <td className="audit-decision">{entry.decision || ''}</td>
+                            <td>{entry.elapsed != null ? `${entry.elapsed}s` : ''}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
