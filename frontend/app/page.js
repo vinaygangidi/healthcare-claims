@@ -282,7 +282,8 @@ export default function Home() {
 
   // Derive executive summary fields from results
   const execSummary = results ? (() => {
-    const parser = results.ClaimParserAgent || {};
+    const rawParser = results.ClaimParserAgent || {};
+    const parser = (rawParser.claims && rawParser.claims[0]) ? rawParser.claims[0] : rawParser;
     const elig = results.EligibilityAgent || {};
     const adj = results.AdjudicationAgent || {};
     const denial = results.DenialReasoningAgent || {};
@@ -627,25 +628,32 @@ export default function Home() {
                   )}
 
                   {/* Claim Intake / Parser */}
-                  {activeTab === 'parser' && results?.ClaimParserAgent && (
-                    <div>
-                      <div className="info-row"><span className="i-label">Claim ID</span><span className="i-value">{results.ClaimParserAgent.claim_id || 'n/a'}</span></div>
-                      <div className="info-row"><span className="i-label">Patient</span><span className="i-value">{results.ClaimParserAgent.patient?.name || 'n/a'}</span></div>
-                      <div className="info-row"><span className="i-label">Provider</span><span className="i-value">{results.ClaimParserAgent.provider?.provider_name || 'n/a'}</span></div>
-                      <div className="info-row"><span className="i-label">Total Charge</span><span className="i-value">${results.ClaimParserAgent.total_charge?.toFixed(2) || '0.00'}</span></div>
-                      <div className="info-row"><span className="i-label">Service Lines</span><span className="i-value">{results.ClaimParserAgent.service_lines?.length ?? 'n/a'}</span></div>
-                      {results.ClaimParserAgent.flags?.length > 0 && (
-                        <div className="flag-list">
-                          <h4>Flags ({results.ClaimParserAgent.flags.length})</h4>
-                          <ul>
-                            {results.ClaimParserAgent.flags.map((f, i) => (
-                              <li key={i}><strong>{f.flag_code}</strong>: {f.message}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                  {activeTab === 'parser' && results?.ClaimParserAgent && (() => {
+                    // Normalize: agent may return flat object or {claims:[...]} if it mirrored input
+                    const raw = results.ClaimParserAgent;
+                    const p = (raw.claims && raw.claims[0]) ? raw.claims[0] : raw;
+                    return (
+                      <div>
+                        <div className="info-row"><span className="i-label">Claim ID</span><span className="i-value">{p.claim_id || 'n/a'}</span></div>
+                        <div className="info-row"><span className="i-label">Patient</span><span className="i-value">{p.patient?.name || 'n/a'}</span></div>
+                        <div className="info-row"><span className="i-label">Provider</span><span className="i-value">{p.provider?.provider_name || 'n/a'}</span></div>
+                        <div className="info-row"><span className="i-label">Total Charge</span><span className="i-value">${p.total_charge != null ? Number(p.total_charge).toFixed(2) : '0.00'}</span></div>
+                        <div className="info-row"><span className="i-label">Service Lines</span><span className="i-value">{p.service_lines?.length ?? 'n/a'}</span></div>
+                        <div className="info-row"><span className="i-label">Submission Date</span><span className="i-value">{p.submission_date || 'n/a'}</span></div>
+                        <div className="info-row"><span className="i-label">Parse Result</span><span className="i-value">{p.is_clean ? 'Clean' : p.is_clean === false ? 'Has flags' : 'n/a'}</span></div>
+                        {p.flags?.length > 0 && (
+                          <div className="flag-list">
+                            <h4>Flags ({p.flags.length})</h4>
+                            <ul>
+                              {p.flags.map((f, i) => (
+                                <li key={i}><strong>{f.flag_code}</strong>: {f.message}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
 
                   {/* Adjudication */}
                   {activeTab === 'adjudication' && results?.AdjudicationAgent && (

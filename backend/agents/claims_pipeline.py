@@ -75,6 +75,10 @@ def _user_content(agent_name: str, all_results: dict, claim_data: dict, payer_da
     """Build user content for each agent by cherry-picking relevant prior outputs."""
 
     if agent_name == "ClaimParserAgent":
+        # Normalize: if data is a batch {"claims": [...]}, take the first claim
+        # so the agent always receives and returns a single flat claim object.
+        if "claims" in claim_data and isinstance(claim_data["claims"], list) and claim_data["claims"]:
+            return json.dumps(claim_data["claims"][0], indent=2)
         return json.dumps(claim_data, indent=2)
 
     elif agent_name == "EligibilityAgent":
