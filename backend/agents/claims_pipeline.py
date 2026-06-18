@@ -230,9 +230,151 @@ async def run_claims_pipeline(
                 "agent": agent_name,
                 "message": f"Failed to parse {agent_name} output: {str(e)}",
             }
+            continue
+
+        # Emit a handoff signal describing what this agent is passing to the next
+        handoff = _build_handoff(agent_name, result, all_results)
+        if handoff:
+            yield {
+                "event": "agent_handoff",
+                "from_agent": agent_name,
+                "to_agent": handoff["to"],
+                "message": handoff["message"],
+                "flags": handoff.get("flags", []),
+                "escalate": handoff.get("escalate", False),
+            }
 
     # Emit final result
     yield {
         "event": "pipeline_complete",
         "results": all_results,
     }
+
+
+def _build_handoff(agent_name: str, result: dict, all_results: dict) -> dict | None:
+    """Derive an agent-to-agent handoff message from what the agent just decided."""
+
+    if agent_name == "ClaimParserAgent":
+        flags = result.get("flags", [])
+        errors = [f for f in flags if f.get("severity") == "ERROR"]
+        warnings = [f for f in flags if f.get("severity") == "WARNING"]
+        service_count = len(result.get("service_lines", []))
+        if errors:
+            msg = (
+                f"Sofia flagged {len(errors)} ERROR(s) on {service_count} service line(s) -- "
+                f"handing to David (Eligibility) with priority review. Errors: "
+                + "; ".join(f['flag_code'] for f in errors[:3])
+            )
+            return {"to": "EligibilityAgent", "message": msg, "flags": [f['flag_code'] for f in errors], "escalate": True}
+        elif warnings:
+            msg = (
+                f"Sofia extracted {service_count} service line(s) with {len(warnings)} warning(s). "
+                f"Passing structured claim to David (Eligibility) for coverage check."
+            )
+            return {"to": "EligibilityAgent", "message": msg, "flags": [f['flag_code'] for f in warnings]}
+        else:
+            msg = (
+                f"Sofia confirmed clean parse: {service_count} service line(s), "
+                f"no flags. Passing to David (Eligibility) for coverage validation."
+            )
+            return {"to": "EligibilityAgent", "message": msg, "flags": []}
+
+    elif agent_name == "EligibilityAgent":
+        is_eligible = result.get("is_eligible", True)
+        cob = result.get("coordination_of_benefits", {})
+        has_cob = bool(cob and cob.get("primary_payer"))
+        flags = result.get("flags", [])
+        auth_flags = [f for f in flags if "AUTH" in f.get("flag_code", "").upper()]
+        if not is_eligible:
+            msg = (
+                "David determined patient is NOT eligible on date of service. "
+                "Escalating to Maria (Adjudication) to calculate zero-payment adjudication and flag for denial."
+            )
+            return {"to": "AdjudicationAgent", "message": msg, "flags": ["PATIENT_INELIGIBLE"], "escalate": True}
+        elif auth_flags:
+            msg = (
+                f"David found {len(auth_flags)} prior authorization issue(s). "
+                "Escalating to Maria (Adjudication) -- auth gaps may trigger line-level denials."
+            )
+            return {"to": "AdjudicationAgent", "message": msg, "flags": [f['flag_code'] for f in auth_flags], "escalate": True}
+        elif has_cob:
+            msg = (
+                "David confirmed COB: patient has dual coverage. "
+                "Passing primary payer share to Maria (Adjudication); secondary coordination will follow in Posting."
+            )
+            return {"to": "AdjudicationAgent", "message": msg, "flags": ["COB_DETECTED"]}
+        else:
+            plan = result.get("patient", {}).get("plan_name", "plan")
+            msg = (
+                f"David confirmed eligibility on date of service under {plan}. "
+                "Passing cost-sharing terms to Maria (Adjudication) for fee schedule application."
+            )
+            return {"to": "AdjudicationAgent", "message": msg, "flags": []}
+
+    elif agent_name == "AdjudicationAgent":
+        status = result.get("adjudication_status", "")
+        lines = result.get("service_lines", [])
+        bundling_flags = [l for l in lines if l.get("bundling_violation")]
+        denied_lines = [l for l in lines if (l.get("insurance_pays") or 0) == 0 and l.get("allowed_amount", 1) == 0]
+        totals = result.get("claim_totals", {})
+        ins_pays = totals.get("total_insurance_pays", 0)
+        if bundling_flags:
+            msg = (
+                f"Maria detected {len(bundling_flags)} NCCI bundling violation(s) on {len(lines)} line(s). "
+                "Escalating to James (Denial Prevention) -- bundled lines require recode before resubmission."
+            )
+            return {"to": "DenialReasoningAgent", "message": msg, "flags": ["NCCI_VIOLATION"], "escalate": True}
+        elif denied_lines or "DENIED" in status.upper():
+            msg = (
+                f"Maria calculated $0 allowable on {len(denied_lines)} line(s) (status: {status}). "
+                "Passing denial details to James (Denial Prevention) for root-cause classification."
+            )
+            return {"to": "DenialReasoningAgent", "message": msg, "flags": ["ZERO_ALLOWABLE"], "escalate": True}
+        else:
+            msg = (
+                f"Maria approved adjudication: insurance pays ${ins_pays:.2f}. "
+                "Passing approved amounts to James (Denial Prevention) for final clearance check."
+            )
+            return {"to": "DenialReasoningAgent", "message": msg, "flags": []}
+
+    elif agent_name == "DenialReasoningAgent":
+        count = result.get("total_denial_count", 0)
+        denials = result.get("denials", [])
+        correctable = [d for d in denials if d.get("is_correctable")]
+        hard = [d for d in denials if not d.get("is_correctable", True)]
+        if hard:
+            msg = (
+                f"James classified {len(hard)} hard denial(s) and {len(correctable)} correctable denial(s). "
+                "Passing to Priya (Payment Posting) -- hard denials will be posted as zero-pay with denial codes."
+            )
+            return {"to": "RemittancePostingAgent", "message": msg, "flags": ["HARD_DENIAL"], "escalate": True}
+        elif correctable:
+            msg = (
+                f"James identified {len(correctable)} correctable denial(s) with resubmission guidance. "
+                "Passing to Priya (Payment Posting) to post partial payment and queue appeals."
+            )
+            return {"to": "RemittancePostingAgent", "message": msg, "flags": ["CORRECTABLE_DENIAL"]}
+        elif count == 0:
+            msg = (
+                "James confirmed no denials. "
+                "Releasing clean claim to Priya (Payment Posting) for ERA generation and GL posting."
+            )
+            return {"to": "RemittancePostingAgent", "message": msg, "flags": []}
+        else:
+            msg = (
+                f"James flagged {count} denial(s). Passing to Priya (Payment Posting) for posting."
+            )
+            return {"to": "RemittancePostingAgent", "message": msg, "flags": ["DENIAL_PRESENT"]}
+
+    elif agent_name == "RemittancePostingAgent":
+        totals = result.get("claim_totals", {})
+        ins = totals.get("total_insurance_pays", 0)
+        patient = totals.get("total_patient_responsibility", 0)
+        gl_count = len(result.get("gl_entries", []))
+        msg = (
+            f"Priya posted {gl_count} GL entries: insurance ${ins:.2f}, patient responsibility ${patient:.2f}. "
+            "Passing full claim ledger to Alex (Revenue Integrity) for KPI analysis and underpayment detection."
+        )
+        return {"to": "RevenueAuditAgent", "message": msg, "flags": []}
+
+    return None

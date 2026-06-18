@@ -771,6 +771,345 @@ footer {
   to { transform: rotate(360deg); }
 }
 
+/* ── Scenario Story Panel ── */
+.scenario-story {
+  background: #0d1627;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.scenario-story-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: rgba(96, 165, 250, 0.07);
+  border-bottom: 1px solid rgba(96, 165, 250, 0.15);
+  flex-wrap: wrap;
+}
+
+.scenario-story-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.12);
+  border: 1px solid rgba(96, 165, 250, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.scenario-story-headline {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.scenario-story-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+@media (max-width: 900px) {
+  .scenario-story-body { grid-template-columns: 1fr; }
+}
+
+.scenario-story-col {
+  padding: 16px 18px;
+}
+
+.scenario-story-col:first-child {
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+.scenario-story-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.scenario-story-text {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.scenario-focus-agents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.scenario-focus-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2dd4bf;
+  background: rgba(45, 212, 191, 0.1);
+  border: 1px solid rgba(45, 212, 191, 0.25);
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+
+.scenario-stakes {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(251, 191, 36, 0.06);
+  border: 1px solid rgba(251, 191, 36, 0.18);
+  border-radius: 6px;
+}
+
+.scenario-stakes-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #fbbf24;
+  margin-bottom: 4px;
+}
+
+.scenario-stakes-text {
+  font-size: 12px;
+  color: #d4a017;
+  line-height: 1.5;
+}
+
+/* ── Agent Handoff Feed ── */
+.handoff-section {
+  margin-bottom: 16px;
+}
+
+.handoff-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 8px;
+}
+
+.handoff-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.handoff-item {
+  background: #111827;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-left: 3px solid #1e40af;
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.handoff-item.escalate {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.04);
+}
+
+.handoff-agents {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+
+.handoff-from {
+  font-size: 11px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.handoff-arrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.06);
+  color: #64748b;
+}
+
+.handoff-item.escalate .handoff-arrow {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.handoff-to {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2dd4bf;
+}
+
+.handoff-message {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.handoff-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.handoff-flag-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.handoff-item.escalate .handoff-flag-badge {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.2);
+}
+
+/* ── Tech Stack Panel ── */
+.tech-stack-section {
+  margin-bottom: 16px;
+  background: #111827;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tech-stack-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s;
+}
+
+.tech-stack-toggle:hover {
+  color: #2dd4bf;
+}
+
+.tech-toggle-icon {
+  font-size: 12px;
+  color: #475569;
+  font-weight: 700;
+}
+
+.tech-stack-body {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 18px;
+}
+
+.tech-stack-intro {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: rgba(45, 212, 191, 0.05);
+  border: 1px solid rgba(45, 212, 191, 0.15);
+  border-radius: 8px;
+}
+
+.tech-stack-intro p {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.65;
+}
+
+.tech-agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.tech-agent-card {
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.tech-agent-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.tech-agent-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tech-agent-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.tech-agent-role {
+  font-size: 10px;
+  color: #60a5fa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+.tech-model-badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+  background: rgba(45, 212, 191, 0.1);
+  color: #2dd4bf;
+  border: 1px solid rgba(45, 212, 191, 0.25);
+}
+
+.tech-why {
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.tech-why strong {
+  color: #94a3b8;
+}
+
+.tech-di-note {
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.5;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 6px;
+  margin-top: 4px;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
