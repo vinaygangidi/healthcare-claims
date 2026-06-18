@@ -319,12 +319,34 @@ export default function Home() {
       <header>
         <div className="header-inner">
           <div className="header-brand">
-            <div className="tagline">AI Health Agents</div>
+            <div className="tagline">Azure AI Foundry</div>
             <h1>Agentic AI for Revenue Cycle Management</h1>
             <p className="subtitle">
-              Multi-agent AI coordinating eligibility, coding, adjudication, and denial recovery
-              , automating 45 minutes of manual work in under 60 seconds.
+              Six specialized AI agents coordinating eligibility, coding, adjudication, and denial recovery.
+              Automating 45 minutes of manual claims work in under 60 seconds.
             </p>
+          </div>
+
+          <div className="header-roster">
+            <div className="header-roster-title">The Agent Team</div>
+            <div className="header-roster-grid">
+              {[
+                { agent: 'ClaimParserAgent',      name: 'Claim Intake',          persona: 'Sofia' },
+                { agent: 'EligibilityAgent',      name: 'Coverage Verification', persona: 'David' },
+                { agent: 'AdjudicationAgent',     name: 'Adjudication',          persona: 'Maria' },
+                { agent: 'DenialReasoningAgent',  name: 'Denial Prevention',     persona: 'James' },
+                { agent: 'RemittancePostingAgent',name: 'Payment Posting',       persona: 'Priya' },
+                { agent: 'RevenueAuditAgent',     name: 'Revenue Integrity',     persona: 'Alex'  },
+              ].map(({ agent, name, persona }) => (
+                <div key={agent} className="header-roster-agent">
+                  <span className="roster-icon">{AGENT_ICONS[agent]}</span>
+                  <div>
+                    <div className="roster-agent-name">{name}</div>
+                    <div className="roster-persona-name">{persona}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </header>
