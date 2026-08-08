@@ -25,13 +25,34 @@ from agents.claims_pipeline import run_claims_pipeline
 
 app = FastAPI(title="Healthcare Claims Processing", version="0.1.0")
 
+# Known-good origins used when ALLOWED_ORIGINS is unset or blank. This is a
+# safe closed default -- never fall back to "*" or [""].
+DEFAULT_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://healthcare-claims.vercel.app",
+]
+
+
+def get_allowed_origins() -> list[str]:
+    """Read the CORS allowlist from ALLOWED_ORIGINS (comma-separated exact origins).
+
+    Tolerates surrounding whitespace and trailing/empty entries. Falls back to
+    DEFAULT_ALLOWED_ORIGINS when the env var is unset or contains no usable
+    entries -- this never silently becomes a wildcard allowlist.
+    """
+    raw = os.environ.get("ALLOWED_ORIGINS", "")
+    origins = [origin.strip() for origin in raw.split(",")]
+    origins = [origin for origin in origins if origin]
+    return origins or list(DEFAULT_ALLOWED_ORIGINS)
+
+
 # Allow the frontend (local dev + Vercel) to call this API from the browser
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=get_allowed_origins(),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],  # OPTIONS preflight is handled by this middleware itself
+    allow_headers=["Content-Type"],
 )
 
 # Paths

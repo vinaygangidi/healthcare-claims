@@ -52,6 +52,12 @@ yarn-error.log
 *.log
 logs/
 
+# Test coverage
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
 # Azure
 .azure/
 
