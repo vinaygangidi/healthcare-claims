@@ -8,6 +8,8 @@ Each agent is stateless; outputs stored in all_results dict and selectively pass
 
 import json
 import asyncio
+import logging
+import uuid
 from typing import AsyncGenerator
 from openai import AsyncAzureOpenAI
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
@@ -21,6 +23,12 @@ from . import (
     remittance_posting_agent,
     revenue_audit_agent,
 )
+
+logger = logging.getLogger(__name__)
+
+# Upper bound on a logged error code. Real SDK codes are short slugs like
+# "content_filter"; anything longer is not a code and is not worth the risk.
+_MAX_CODE_LEN = 64
 
 AGENT_MODULES = {
     "ClaimParserAgent": claim_parser_agent,
@@ -126,37 +134,80 @@ def _user_content(agent_name: str, all_results: dict, claim_data: dict, payer_da
     return ""
 
 
+def _safe_error_code(error: Exception) -> str | None:
+    """Return the SDK error code only when it is a short, slug-shaped string.
+
+    openai's APIStatusError builds `.code` from the response body without
+    coercing it to a string, so a hostile or content-filtered response can
+    put arbitrary nested content there. Since agent prompts embed claim and
+    payer JSON, that content is PHI-shaped -- so anything that is not an
+    obvious code slug is dropped rather than logged.
+    """
+    code = getattr(error, "code", None)
+    if not isinstance(code, str) or len(code) > _MAX_CODE_LEN:
+        return None
+    if not code.replace("_", "").replace("-", "").replace(".", "").isalnum():
+        return None
+    return code
+
+
+def _log_redacted_error(run_id: str, agent_name: str, error: Exception) -> None:
+    """Log a pipeline failure without echoing request content.
+
+    Never logs str(e)/repr(e)/traceback: agent prompts embed claim and payer
+    JSON, so an SDK exception's message or body can carry PHI-shaped content.
+    Only the exception type, HTTP status, and a validated code slug are kept --
+    enough to correlate with an incident via run_id and debug server-side.
+    """
+    logger.error(
+        "run_id=%s agent=%s exception_type=%s status_code=%s code=%s",
+        run_id,
+        agent_name,
+        type(error).__name__,
+        getattr(error, "status_code", None),
+        _safe_error_code(error),
+    )
+
+
 async def run_claims_pipeline(
     claim_data: dict,
     payer_data: dict,
+    client: AsyncAzureOpenAI | None = None,
 ) -> AsyncGenerator[dict, None]:
     """
     Run the healthcare claims pipeline, yielding SSE events.
+
+    Args:
+        client: optional pre-built AsyncAzureOpenAI client, primarily for
+            testing. When omitted, a client is constructed the same way as
+            before (API key if present, else DefaultAzureCredential).
 
     Yields:
         dict with keys: event, agent, ... (agent-specific fields)
     """
 
-    # Use API key if available, otherwise use DefaultAzureCredential
-    api_key = os.environ.get("AZURE_API_KEY")
+    if client is None:
+        # Use API key if available, otherwise use DefaultAzureCredential
+        api_key = os.environ.get("AZURE_API_KEY")
 
-    if api_key:
-        client = AsyncAzureOpenAI(
-            azure_endpoint=os.environ.get("AZURE_AI_ENDPOINT"),
-            api_key=api_key,
-            api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
-        )
-    else:
-        # Use DefaultAzureCredential for managed identity auth
-        token_provider = get_bearer_token_provider(
-            DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
-        )
-        client = AsyncAzureOpenAI(
-            azure_endpoint=os.environ.get("AZURE_AI_ENDPOINT"),
-            azure_ad_token_provider=token_provider,
-            api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
-        )
+        if api_key:
+            client = AsyncAzureOpenAI(
+                azure_endpoint=os.environ.get("AZURE_AI_ENDPOINT"),
+                api_key=api_key,
+                api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
+            )
+        else:
+            # Use DefaultAzureCredential for managed identity auth
+            token_provider = get_bearer_token_provider(
+                DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+            )
+            client = AsyncAzureOpenAI(
+                azure_endpoint=os.environ.get("AZURE_AI_ENDPOINT"),
+                azure_ad_token_provider=token_provider,
+                api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
+            )
 
+    run_id = str(uuid.uuid4())
     all_results = {}
 
     for agent_name in AGENT_ORDER:
@@ -209,13 +260,12 @@ async def run_claims_pipeline(
                     }
 
         except Exception as e:
-            import traceback
-            error_msg = f"Error calling {agent_name}: {str(e)}\n{traceback.format_exc()}"
-            print(error_msg, flush=True)
+            _log_redacted_error(run_id, agent_name, e)
             yield {
                 "event": "error",
                 "agent": agent_name,
-                "message": f"Error calling {agent_name}: {str(e)}",
+                "message": f"An error occurred while calling {agent_name}. Please try again.",
+                "request_id": run_id,
             }
             continue
 
@@ -229,10 +279,14 @@ async def run_claims_pipeline(
                 "output": result,
             }
         except Exception as e:
+            # full_response may itself contain PHI-shaped content echoed back
+            # by the model, so the same redaction rule applies here.
+            _log_redacted_error(run_id, agent_name, e)
             yield {
                 "event": "error",
                 "agent": agent_name,
-                "message": f"Failed to parse {agent_name} output: {str(e)}",
+                "message": f"Failed to parse {agent_name} output. Please try again.",
+                "request_id": run_id,
             }
             continue
 
