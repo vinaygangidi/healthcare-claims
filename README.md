@@ -46,6 +46,31 @@ python -m uvicorn main:app --reload --port 8001
 - `GET /demo-data?sample=01`: Load sample claim and payer data
 - `POST /process`: Submit claim for processing (SSE stream response)
 
+### Environment Variables
+
+Backend, set in `backend/.env` locally and in the hosting environment for a
+deployment. See `backend/.env.example` for the full list.
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `AZURE_AI_ENDPOINT` | yes | Azure AI Foundry endpoint. |
+| `AZURE_API_KEY` | no | API key auth. When omitted, falls back to `DefaultAzureCredential` (managed identity). |
+| `ALLOWED_ORIGINS` | recommended | Comma-separated list of exact browser origins allowed to call this API (CORS). |
+| `MODEL_*_AGENT` | no | Per-agent model override; see `.env.example`. |
+
+`ALLOWED_ORIGINS` controls a security boundary, so it is worth setting
+explicitly rather than relying on the default:
+
+- Exact origins only — no wildcards and no suffix matching, so Vercel
+  preview deploys are not covered and need their own entry or a local
+  backend.
+- Unset or blank falls back to `http://localhost:3000` plus the production
+  frontend origin. That default is closed, never `*`.
+- It is read once at startup, so changing it requires a restart or redeploy,
+  not just an edit to the variable.
+
+Example: `ALLOWED_ORIGINS=http://localhost:3000,https://your-frontend.vercel.app`
+
 ### Frontend Setup
 
 ```bash
@@ -69,6 +94,17 @@ Sample datasets in `backend/data/samples/`:
 See [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) for detailed architecture, data flow, and compliance notes.
 
 ## Development
+
+### Running Tests
+
+```bash
+pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+python -m pytest        # from the repo root; config lives in pyproject.toml
+```
+
+Tests mock Azure OpenAI and never call the live service. There is no
+integration suite against real Azure yet; that would be a separate opt-in
+target.
 
 ### Adding a New Test Scenario
 
