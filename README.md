@@ -2,6 +2,11 @@
 
 A 6-agent AI system for automating healthcare claims submission, eligibility verification, adjudication, and denial management.
 
+![Language](https://img.shields.io/badge/language-Python-blue?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/vinaygangidi/healthcare-claims?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-14%20passing-brightgreen?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+
 ## Architecture
 
 ```
@@ -57,6 +62,14 @@ deployment. See `backend/.env.example` for the full list.
 | `AZURE_API_KEY` | no | API key auth. When omitted, falls back to `DefaultAzureCredential` (managed identity). |
 | `ALLOWED_ORIGINS` | recommended | Comma-separated list of exact browser origins allowed to call this API (CORS). |
 | `MODEL_*_AGENT` | no | Per-agent model override; see `.env.example`. |
+| `AZURE_OPENAI_API_VERSION` | no | Azure OpenAI API version. Defaults to `2024-12-01-preview` in code. |
+| `NEXT_PUBLIC_BACKEND_URL` | no | Frontend only. Backend URL for the browser; defaults to `http://localhost:8002`. |
+
+Three variables in `backend/.env.example` are **not read by any code**:
+`USE_FIXTURES`, `AZURE_STORAGE_ACCOUNT_URL`, and
+`APPLICATIONINSIGHTS_CONNECTION_STRING`. They are aspirational — there is no
+fixture-replay mode, no audit-trail persistence, and no telemetry. Setting them
+has no effect.
 
 `ALLOWED_ORIGINS` controls a security boundary, so it is worth setting
 explicitly rather than relying on the default:
@@ -127,12 +140,47 @@ target.
 
 ## Status
 
-- 6 agents defined with prompts
-- Orchestrator with SSE streaming
-- Sample test data (samples 01-05)
-- Frontend React dashboard
-- Real payer integrations (Medicare API, EDI) planned
+Working: 6 agents with prompts, SSE-streaming orchestrator, 5 sample datasets,
+Next.js dashboard, 14 passing tests.
+
+Not built: audit-trail persistence, telemetry, real payer integrations (Medicare
+API, EDI), authentication.
+
+## Limitations
+
+- **No audit trail is persisted.** `AZURE_STORAGE_ACCOUNT_URL` appears in
+  `.env.example` but nothing reads it. Agent outputs live only in the SSE stream and
+  the response — nothing is written to durable storage. For a claims system this is
+  the most significant gap: there is no record of how a given adjudication was reached.
+- **No telemetry.** `APPLICATIONINSIGHTS_CONNECTION_STRING` is likewise unread. There
+  is no tracing, no metrics, and no structured logging pipeline.
+- **Adjudication is model output, not a rules engine.** Fee schedules, unbundling and
+  upcoding detection, and allowed-amount math are produced by GPT-4o from a prompt.
+  There is no deterministic validation of the arithmetic and no code-verified check
+  against a real fee schedule, so figures should be treated as illustrative.
+- **No real payer integration.** No Medicare API, no X12 EDI (837/835), no
+  clearinghouse. Input is JSON supplied by the caller.
+- **Synthetic sample data only.** Five scenarios in `backend/data/samples/`. No real
+  claims have been processed.
+- **Test coverage is uneven.** 14 tests pass and cover the pipeline orchestrator and
+  CORS parsing well, including error-redaction assertions. The `/samples`,
+  `/demo-data`, and `/process` endpoints have no direct tests, and the six agent
+  modules are only exercised incidentally.
+- **PHI is sent to Azure OpenAI.** Every claim and payer record in a request is
+  transmitted to the Azure OpenAI service. This repository has no BAA, no
+  de-identification step, and no PHI-handling controls — do not process real patient
+  data without addressing HIPAA obligations first.
+- **No authentication.** Any caller who can reach the API can submit claims and read
+  results. `ALLOWED_ORIGINS` restricts browsers via CORS; it is not an auth boundary
+  and does not stop direct HTTP calls.
+- **Dependencies are unpinned lower bounds.** `requirements.txt` uses `>=` throughout,
+  so two installs weeks apart can resolve to different versions.
+- **Deploy config is contradictory.** The root `railway.json` specifies the
+  `DOCKERFILE` builder while `backend/railway.json` specifies `NIXPACKS` with its own
+  start command. Only one applies depending on the configured root directory.
+- **Single-process only.** Pipeline state is per-request and held in memory; there is
+  no queue or worker model, so a long claim occupies a request slot for its duration.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
