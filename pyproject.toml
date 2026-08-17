@@ -1,0 +1,8 @@
+[tool.pytest.ini_options]
+# Pin rootdir and the import path explicitly. Without this, `from main import
+# app` in backend/tests/conftest.py resolves only by accident -- pytest's
+# prepend import mode walks up from backend/tests/ (which has __init__.py)
+# to backend/ (which does not) and inserts that into sys.path. Adding
+# backend/__init__.py later would silently break the whole suite.
+pythonpath = ["backend"]
+testpaths = ["backend/tests"]

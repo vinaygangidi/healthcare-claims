@@ -52,6 +52,16 @@ yarn-error.log
 *.log
 logs/
 
+# Local tool state (permission allowlists etc., not shared config)
+.claude/settings.local.json
+.claude/settings.json
+
+# Test coverage
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
 # Azure
 .azure/
 
